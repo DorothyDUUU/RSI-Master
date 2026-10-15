@@ -1,0 +1,59 @@
+# ============================================================================
+# slime SFT 训练配置示例 — Qwen3-4B-Base 单卡 (slime_sft / slime-单卡训练)
+# ============================================================================
+#
+# 这是 `worker_submit` 在 training_mode=slime_sft 下 `training_config_path` 指向的
+# **slime 配置文件** (YAML 或 JSON)。框架解析成 dict, 键直接映射到
+# `backend/backend/slime/scripts/launch_sft.sh` 的 env (见 SUBMIT_GUIDE.md §4.2),
+# 与 run 默认 state["slime_config"] + 内联 --slime-config 合并, 覆盖托管默认键时
+# 返回 slime_config_warnings 但不阻止。
+#
+# slime 已接 serve/eval (2026-08-23): 训练 → stage-1.5 把 torch_dist ckpt 转成
+#    HF safetensors → stage-2 vLLM serve → stage-3 评测, result.json 拿真分。
+#    torch_dist ckpt 同时保留在 ckpt_dir。除非配 slime_config.skip_eval: true
+#    才退回只训练 (eval_status=skipped)。
+#
+# ⚠️ 稠密模型 (Qwen3-4B-Base, 无 MoE): expert-model-parallel (EP) 必须 = 1。
+#    并行度约束: world_size = TP × EP × CP × PP(=1) == NUM_GPUS。
+#    单卡 → TP=1 × EP=1 × CP=1 = 1。
+#    CP 在 seq_length>4096 时启用; 默认 CP=1。
+#
+# 前置条件 (GPU 节点, 一次性):
+#   1) torch_dist 权重: 必须先跑 convert_hf_to_torch_dist.sh 把 HF 权重转成
+#      Megatron torch_dist 格式 (训练 --load 用)。验证 harness 会自动完成
+#      (`validate_on_host.py --convert`)。
+#   2) 数据: parquet, 含 OpenAI chat 列 `messages` (格式由 slime_data_preflight.py
+#      校验)。污染检查在提交侧自动做。
+#
+# 4B 稠密入口说明: 框架 slime_sft 委托的 launch_sft.sh 是 35B MoE demo (架构参数
+# 硬编码); 稠密 4B 的**正确入口**是 launch_sft_smoke.sh (source 官方 qwen3-4B.sh
+# spec)。下面这些键对两个脚本都是同一套 env 契约 —— 验证 harness 用 smoke 入口
+# 在 Qwen3-4B-Base 上端到端验证本配置。
+# ============================================================================
+
+# 必填: HF base 权重目录 (训练 --hf-checkpoint)。
+model_dir: <repo>/public/models/Qwen/Qwen3-4B-Base
+
+# 必填: torch_dist 权重目录 (训练 --load)。= model_dir + "_torch_dist" 约定。
+torch_dist_dir: <repo>/public/models/Qwen/Qwen3-4B-Base_torch_dist
+
+# 训练轮数。smoke 入口固定 1 epoch; 正式训练这里生效 (launch_sft.sh 读 NUM_EPOCH)。
+num_epoch: 1
+
+# ---- 并行度 (单卡) ----------------------------------------------------------
+num_gpus: 1     # ray 分配卡数 == world_size (单卡)
+tp_size: 1      # 张量并行; 稠密模型 GQA 约束只能 1 或 2
+ep_size: 1      # 专家并行; 稠密模型固定 1
+has_nvlink: 0   # NCCL_NVLS_ENABLE; H20 无 NVLink 桥接置 0
+
+# ---- seq_length & CP (用 check_seq_length.py 确认) --------------------------------
+# 每次提交前必须跑 check_seq_length.py 确认推荐值, 写入下面两行。
+# 默认 seq_length=32768 (Qwen3-4B 的 32K 上下文), CP=1 (seq_length<=4096 时 CP 无收益)。
+# 超过 4096 时建议开 CP, 但必须调整 TP/EP 使 TP×EP×CP = NUM_GPUS。
+seq_length: 32768          # 最大序列长度 (128 对齐)
+max_tokens_per_gpu: 32768  # 必须与 seq_length 一致
+# cp_size: 1               # 上下文并行; 默认为 1
+
+# ---- 产物落点 (默认值 = workspace / workspace/checkpoints, 覆盖会有 warning) -----
+# output_dir: /path/to/workspace        # 日志 + 训练中间产物
+# ckpt_dir:   /path/to/workspace/checkpoints   # torch_dist ckpt 落这里

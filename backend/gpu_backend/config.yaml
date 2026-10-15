@@ -1,0 +1,22 @@
+# GPU Backend Configuration
+# ==========================
+# Read by gpu-backend CLI.  Environment variables take precedence.
+
+# ---- Server connection ----
+backend:
+  host: localhost
+  port: 8989
+  # Full URL: http://{host}:{port}
+  # Override with BACKEND_URL env var.
+
+# ---- Default timeouts (seconds) ----
+defaults:
+  exec_timeout: 1800
+  script_timeout: 7200
+  max_mem_quota: 3000
+
+# ---- Resource thresholds ----
+thresholds:
+  max_memory_utilization: 95.0
+  max_gpu_utilization: 99.0
+  auto_background_seconds: 300

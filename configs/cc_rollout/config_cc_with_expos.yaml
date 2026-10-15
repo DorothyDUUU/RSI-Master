@@ -1,0 +1,53 @@
+# cc_rollout — cc_with_expos mode: one CC plays MainAgent / Worker / Reviewer and
+# drives the submit-train pipeline through the CLI form of ExpOS
+# (workspace/expos).
+#
+# Differs from config.yaml (cc_naive) only in `mode`, plus `run_contract`, which
+# is injected into ExperimentOS.initialize. `submit_pipeline` must be true here —
+# `expos worker submit` runs the serverless pipeline it seeds.
+#
+# See config.yaml for the notes on paths / auth_token — the same rules apply.
+verbose: true
+mode: cc_with_expos
+run:
+  run_id: cc_rollout_expos_35b
+  base_model: /path/to/your/models/Qwen/Qwen3.5-35B-A3B-Base
+  public_dirs:                # --add-dir allowlist
+  - /path/to/your/benchmark-root
+  - /path/to/your/repo/public
+  - /path/to/your/venv
+  single_agent_running_time_seconds: 36000   # per-agent wall-clock budget
+  max_running_time_seconds: null             # hard global deadline (null = unlimited)
+  # run_contract is injected into ExperimentOS.initialize — WorkerService.submit
+  # gates allowed_training_modes on it (LoRA is retired; full-parameter SFT only).
+  run_contract:
+    allowed_training_modes: [llama_factory_sft, slime_sft]
+eval:
+  backend: eval_all           # which backend/backend/eval_* module this run uses
+  bench_id: aime2025          # benchmark id — written into experiment_os state at seed
+  limit: 500                  # samples scored per eval
+  max_tokens: 0               # 0 = bench default
+  max_workers: 0              # 0 = auto
+  serve_gpu_memory_utilization: 0.95
+  serve_max_model_len: 262144
+gpu_backend:
+  local_port: 8989
+  gpu_request: 1
+  priority: high
+claude:
+  bin: claude
+  permission_mode: bypassPermissions
+  # base_url: leave unset to use the claude CLI's own default endpoint.
+  # base_url: https://your-router.example.com/v1
+  auth_token: 'sk-123'        # placeholder against an open router; must be non-empty
+  # model: set this when your router serves a single model id — the runner maps
+  #   it onto all three DEFAULT_*_MODEL tiers so no tier requests an unknown id.
+workspace:
+  public_seeds:
+    gpu_backend: true
+    backend_modules:
+      eval_all: true
+      slime: true
+      search_cli: true
+      submit_pipeline: true   # required: the serverless pipeline behind `expos worker submit`
+      vllm: true

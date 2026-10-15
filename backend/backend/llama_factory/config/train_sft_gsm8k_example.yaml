@@ -1,0 +1,303 @@
+# ============================================================================
+# LLaMA-Factory Training Configuration — Annotated Reference
+# ============================================================================
+#
+# This config drives `llamafactory-cli train <this_file>.yaml`.
+# All arguments can also be overridden on the command line:
+#
+#     llamafactory-cli train config/train_sft_gsm8k.yaml \
+#         learning_rate=5e-5 \
+#         num_train_epochs=5.0 \
+#         output_dir=/new/output/path
+#
+# HOW TO LOOK UP OPTIONS:
+#   - Full argument reference: documents/advanced/arguments.rst
+#   - Training algorithms:    documents/advanced/tuning_algorithms.rst
+#   - Dataset format & reg:   documents/getting_started/data_preparation.rst
+#   - SFT guide:             documents/getting_started/sft.rst
+#   - Registered templates:  llama_factory/src/llamafactory/data/template.py
+#                             (search for `register_template`)
+#   - Registered datasets:   llama_factory/data/dataset_info.json
+#   - Official examples:     llama_factory/examples/
+#
+# ============================================================================
+
+
+# ---------------------------------------------------------------------------
+# MODEL
+# ---------------------------------------------------------------------------
+### model
+# Path to the base model (local directory or HuggingFace/ModelScope repo id).
+# For this project, available local models:
+#   - $SHARED_ROOT/.../public/models/Qwen/Qwen3-1.7B        (Instruct, chat-tuned)
+#   - $SHARED_ROOT/.../public/models/Qwen/Qwen3-1.7B-Base   (Base, no SFT)
+#   - $SHARED_ROOT/.../public/models/Qwen/Qwen3-32B          (larger Instruct)
+model_name_or_path: <repo>/public/models/Qwen/Qwen3-1.7B
+
+# Whether to execute remote code from the model repo (required for some custom models).
+# Set to true for Qwen3 models.
+trust_remote_code: true
+
+
+# ---------------------------------------------------------------------------
+# METHOD — What training stage & algorithm to use
+# ---------------------------------------------------------------------------
+### method
+# stage: Training stage.
+#   Options: sft  = Supervised Fine-Tuning (most common)
+#            pt   = Pre-Training
+#            rm   = Reward Modeling
+#            ppo  = PPO (RLHF)
+#            dpo  = Direct Preference Optimization
+#            kto  = KTO (Kahneman-Tversky Optimization)
+#   See: documents/advanced/arguments.rst → "FinetuningArguments"
+stage: sft
+
+# do_train: true = train, false = evaluation/inference only.
+do_train: true
+
+# finetuning_type: Training method.
+#   Options:
+#     full   — Full parameter fine-tuning. **The only allowed method in this
+#              framework** (LoRA/QLoRA decommissioned 2026-08-20; the submit side
+#              rejects `lora`/`qlora`). Requires more VRAM; use DeepSpeed
+#              ZeRO-3 for large models (set `deepspeed: examples/deepspeed/ds_z3_config.json`).
+#     freeze — Only train the last N layers. Related params: freeze_trainable_layers,
+#              freeze_trainable_modules. Produces a full-weight checkpoint vLLM can serve.
+#   See: documents/advanced/tuning_algorithms.rst
+finetuning_type: full
+
+
+# ---------------------------------------------------------------------------
+# DATASET
+# ---------------------------------------------------------------------------
+### dataset
+# dataset: Dataset name(s) as registered in llama_factory/data/dataset_info.json.
+#   Comma-separated for multiple datasets. Common built-in options:
+#     identity             — identity conversation (minimal SFT baseline)
+#     alpaca_en_demo       — Alpaca English demo dataset
+#     alpaca_zh_demo       — Alpaca Chinese demo dataset
+#     alpaca_en            — Full Alpaca (52K English)
+#     alpaca_gpt4_en       — Alpaca-GPT4 (52K English, higher quality)
+#     alpaca_cot           — Chain-of-Thought Alpaca
+#     mathinstruct         — Math instruction data
+#     openorca             — OpenOrca
+#     slimorca             — SlimOrca
+#     ... many more. Run: python -c "import json; d=json.load(open('llama_factory/data/dataset_info.json')); print(sorted(d.keys()))"
+#   Custom datasets: add entries to llama_factory/data/dataset_info.json.
+#   See: documents/getting_started/data_preparation.rst
+dataset: identity,alpaca_en_demo
+
+# template: Chat template to format conversations for this model family.
+#   Must match the model! Common Qwen3 templates:
+#     qwen3           — Standard Qwen3 chat template
+#     qwen3_nothink   — Qwen3 without <｜end▁of▁thinking｜> (cleaner for SFT)
+#     qwen3_vl        — Qwen3 vision-language
+#     qwen3_omni      — Qwen3 omni (multimodal)
+#   Other common templates: default, llama3, chatml, deepseek, deepseek3, qwen, alpaca, ...
+#   Full list: grep 'name="' llama_factory/src/llamafactory/data/template.py | grep -v mm_plugin
+template: qwen3_nothink
+
+# cutoff_len: Maximum token length for input sequences. Longer sequences are truncated.
+#   Increase for long-form reasoning (e.g. math CoT). Decrease to save VRAM.
+#   Common values: 1024 (QA), 2048 (conversation), 4096 (long docs), 8192+ (reasoning).
+cutoff_len: 2048
+
+# max_samples: Max number of examples to use per dataset. Useful for quick smoke tests
+#   or limiting dataset size. Set to a large number or omit for all data.
+#   Default: None (use all).
+max_samples: 1000
+
+# preprocessing_num_workers: Number of parallel workers for dataset tokenization.
+#   Increase for faster preprocessing if CPU cores available.
+#   Default: None.
+preprocessing_num_workers: 16
+
+# dataloader_num_workers: Number of workers for the training data loader.
+#   Typical: 2–8. Increase if data loading is the bottleneck.
+#   Default: 0.
+dataloader_num_workers: 4
+
+# Additional dataset options (uncomment to use):
+# eval_dataset: alpaca_en_demo     # Dataset name for evaluation.
+# val_size: 0.1                    # Fraction of training data to use as validation (0.0–1.0).
+# streaming: true                  # Stream dataset from disk (for datasets too large for RAM).
+# mix_strategy: concat            # How to combine multiple datasets:
+#                                  #   concat — concatenate sequentially
+#                                  #   interleave_under — interleave, stop at shortest
+#                                  #   interleave_over — interleave, oversample shorter
+# interleave_probs: "0.7,0.3"     # Sampling probabilities for interleave strategy.
+# packing: true                    # Pack multiple short examples into one sequence (saves tokens).
+# neat_packing: true               # Packing without cross-attention contamination.
+# train_on_prompt: true            # Also compute loss on the prompt portion (default: loss only on response).
+# overwrite_cache: true            # Re-tokenize even if a cached dataset exists.
+# tool_format: "hermes"            # Format for function-calling examples.
+# tokenized_path: /tmp/tokenized   # Save/load cached tokenized dataset to/from this path.
+
+
+# ---------------------------------------------------------------------------
+# OUTPUT & LOGGING
+# ---------------------------------------------------------------------------
+### output
+# output_dir: Where to save checkpoints, logs, and the final model.
+#   Creates the directory if it doesn't exist.
+output_dir: <repo>/saves/qwen3-1.7b/full/sft
+
+# logging_steps: Log training metrics every N steps.
+logging_steps: 10
+
+# save_steps: Save a model checkpoint every N steps.
+#   Also saves at the end of training. Set higher for long runs to save disk space.
+save_steps: 500
+
+# plot_loss: Generate a loss curve plot (loss.png) in the output directory.
+#   Requires matplotlib.
+plot_loss: true
+
+# overwrite_output_dir: If true, overwrites the output directory if it already exists.
+#   Set to false to prevent accidental overwrites when resuming.
+overwrite_output_dir: true
+
+# save_only_model: If true, only saves model weights (not optimizer/scheduler states).
+#   Saves disk space but you cannot resume training from the checkpoint.
+save_only_model: false
+
+# report_to: Where to send training logs & metrics.
+#   Options:
+#     none        — no external reporting (default for local runs).
+#     wandb       — Weights & Biases (set WANDB_API_KEY env var).
+#     tensorboard — TensorBoard (view with: tensorboard --logdir <output_dir>).
+#     swanlab     — SwanLab (set SWANLAB_API_KEY env var).
+#     mlflow      — MLflow tracking.
+report_to: none  # choices: [none, wandb, tensorboard, swanlab, mlflow]
+
+# Optional output options:
+# push_to_hub: true               # Push final model to HuggingFace Hub.
+# hub_model_id: "my-username/my-sft-model"  # HF repo name for push.
+# hub_token: "hf_xxx"             # HF token (or set HF_TOKEN env var).
+
+
+# ---------------------------------------------------------------------------
+# TRAINING HYPERPARAMETERS
+# ---------------------------------------------------------------------------
+### train
+# per_device_train_batch_size: Batch size per GPU.
+#   Total batch size = per_device_train_batch_size × gradient_accumulation_steps × num_gpus.
+#   Increase if you have VRAM headroom; decrease if you get OOM.
+#   Typical: 1–2 for full fine-tuning.
+per_device_train_batch_size: 1
+
+# gradient_accumulation_steps: Accumulate gradients over N steps before updating weights.
+#   Effectively multiplies batch size without increasing VRAM.
+#   Example: batch_size=1 + grad_accum=8 → effective batch size = 8.
+#   Increase for more stable training at the cost of slower updates.
+gradient_accumulation_steps: 8
+
+# learning_rate: Peak learning rate for the optimizer.
+#   Typical ranges:
+#     Full:   1e-6 to 5e-5
+#     Freeze: 1e-5 to 5e-5
+#   Use a lower LR for continued pre-training or when fine-tuning on small datasets.
+learning_rate: 5.0e-5
+
+# num_train_epochs: Number of full passes over the training data.
+#   Typical: 1–3 for SFT, 3–10 for small datasets.
+#   Use fewer epochs for large datasets to avoid overfitting.
+num_train_epochs: 3.0
+
+# lr_scheduler_type: Learning rate schedule.
+#   Options:
+#     cosine     — Cosine decay (recommended for most cases). Warmup → cosine down to ~0.
+#     linear     — Linear decay.
+#     constant   — Constant LR (no decay).
+#     polynomial — Polynomial decay.
+#     cosine_with_restarts — Cosine with periodic restarts.
+#   See: document/advanced/arguments.rst
+lr_scheduler_type: cosine
+
+# warmup_ratio: Fraction of total steps used for LR warmup.
+#   During warmup, LR increases linearly from 0 to learning_rate.
+#   Typical: 0.03–0.1 (3%–10% of total steps).
+#   Alternative: warmup_steps (absolute number of steps).
+warmup_ratio: 0.1
+
+# bf16: Use bfloat16 mixed precision training.
+#   Requires Ampere (A100/A6000) or newer GPU. Saves VRAM, speeds up training.
+#   Set to false and use fp16: true for older GPUs (V100, T4).
+#   Do NOT enable both bf16 and fp16 at the same time.
+bf16: true
+
+# ddp_timeout: Timeout in seconds for distributed data parallel operations.
+#   Increase for very slow network/storage to avoid spurious timeouts.
+ddp_timeout: 180000000
+
+# resume_from_checkpoint: Path to a checkpoint to resume training from.
+#   Set to a specific checkpoint path, or null to start fresh.
+resume_from_checkpoint: null
+
+# Additional training options (uncomment to use):
+# max_grad_norm: 1.0              # Gradient clipping threshold. Default: 1.0.
+# warmup_steps: 100               # Alternative to warmup_ratio: absolute warmup steps.
+# fp16: true                      # Use float16 mixed precision (for older GPUs).
+# optim: adamw_torch              # Optimizer: adamw_torch (default), adamw_8bit, adafactor, sgd, ...
+# weight_decay: 0.01              # Weight decay for AdamW. Default: 0.0.
+# max_steps: -1                   # Max training steps (-1 = use num_train_epochs).
+# ddp_find_unused_parameters: false  # For DDP debugging with complex models.
+# include_effective_tokens_per_second: true  # Log effective tokens/sec (useful for throughput tuning).
+
+
+# ---------------------------------------------------------------------------
+# EVALUATION (commented out — enable for validation during training)
+# ---------------------------------------------------------------------------
+### eval
+# eval_dataset: alpaca_en_demo
+# val_size: 0.1
+# per_device_eval_batch_size: 1
+# eval_strategy: steps    # When to evaluate: "steps" (every N steps) or "epoch" (every epoch).
+# eval_steps: 500
+# eval_on_each_dataset: true  # Evaluate each dataset separately instead of concatenated.
+# compute_accuracy: true      # Compute token-level accuracy during evaluation.
+
+
+# ============================================================================
+# QUICK REFERENCE — Common Scenarios
+# ============================================================================
+#
+# 1. SMOKE TEST (quick sanity check):
+#    Set max_samples: 50, num_train_epochs: 1.0, save_steps: 1000.
+#
+# 2. FULL PARAMETER FINE-TUNING (large model on multi-GPU):
+#    finetuning_type: full
+#    deepspeed: examples/deepspeed/ds_z3_config.json
+#    per_device_train_batch_size: 1
+#    gradient_accumulation_steps: 16
+#    bf16: true
+#
+# 3. (REMOVED) LoRA/QLoRA — decommissioned 2026-08-20. Submit-side hard-rejects
+#    finetuning_type: lora/qlora. Full SFT (finetuning_type: full) is the only
+#    allowed llama_factory training method.
+#
+# 4. CUSTOM DATASET:
+#    1. Prepare data in ShareGPT or Alpaca JSON format
+#    2. Add entry to llama_factory/data/dataset_info.json
+#    3. Reference by name in `dataset:`
+#    See: documents/getting_started/data_preparation.rst
+#
+# 5. DISTILLATION TRAINING (e.g., train 1.7B on 32B outputs):
+#    1. Generate teacher outputs from the 32B model on the TRAIN split ONLY
+#       (NEVER on the test set — see eval_gsm8k/README.md for details)
+#    2. Format outputs as Alpaca-style JSON
+#    3. Register as a custom dataset
+#    4. Use this config with model_name_or_path pointing to the student model
+#
+# 6. RESUME TRAINING FROM CHECKPOINT:
+#    resume_from_checkpoint: saves/qwen3-1.7b/full/sft/checkpoint-1000
+#    (leave overwrite_output_dir: false)
+#
+# 7. MULTI-GPU TRAINING:
+#    Just set CUDA_VISIBLE_DEVICES=0,1,2,3 — LLaMA-Factory auto-detects all GPUs.
+#    For multi-node: see documents/advanced/distributed.rst
+#    (In this framework the GPU scheduler picks the card and injects
+#    CUDA_VISIBLE_DEVICES; workers must not set it.)
+#
+# ============================================================================

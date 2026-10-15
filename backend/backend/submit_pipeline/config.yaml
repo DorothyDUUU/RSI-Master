@@ -1,0 +1,9 @@
+# submit_pipeline runtime config (loaded by config.py).
+# gpu_backend.url 留空 -> 复用 backend/gpu_backend/config.yaml 的 url (get_backend_url()).
+gpu_backend:
+  url: ""
+  submit_timeout_sec: 60
+
+eval:
+  poll_interval_sec: 30
+  script_timeout_sec: 7200

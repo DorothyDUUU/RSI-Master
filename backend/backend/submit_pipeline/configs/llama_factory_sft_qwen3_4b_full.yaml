@@ -1,0 +1,73 @@
+# ============================================================================
+# LLaMA-Factory 训练配置示例 — Qwen3-4B-Base 全参 SFT (llama_factory_sft)
+# ============================================================================
+#
+# 这是给 worker agent 的**示例模板**, 作为 `worker_submit` 的 `training_config_path`
+# 传入 (training_mode=llama_factory_sft)。框架把它**原样**交给 `llamafactory-cli train`
+# (只通过 CLI key=value 覆盖 output_dir / dataset_dir / report_to, 不原地改这个文件)。
+#
+# 数据准备: 提交一份 **Alpaca JSONL** (`data_path`), 每行
+#   {"instruction": ..., "input": ..., "output": ...}
+# 框架会做 benchmark 去污染 (命中评测 query 的行剔除) 后再训练。参考
+# SUBMIT_GUIDE.md §3 / llama_factory_data_preflight.py (stage-0 预检)。
+#
+# 部署点 (本 repo, 共享 volume, 主机可见):
+#   基座模型   <repo>/public/models/Qwen/Qwen3-4B-Base
+#   训练 venv  public/llama_factory_env  (pipeline stage-1 自动 source)
+#   vLLM venv  public/vllm_env_0819      (pipeline stage-2 自动 source; transformers
+#                                         5.15 / vllm 0.27, 读得懂训练产物的
+#                                         rope_parameters 格式 — 见 vllm_serve_guard)
+#
+# 验证: `python backend/backend/submit_docs/validate_on_host.py` 会在主机
+# gpu-host (gpu-host, 4×H20) 上用它做端到端冒烟 (12 条样本 + gsm8k 小样本评测)。
+# ============================================================================
+
+# ---- 模型 ----------------------------------------------------------------
+model_name_or_path: <repo>/public/models/Qwen/Qwen3-4B-Base
+trust_remote_code: true
+
+# ---- 训练方式 ---------------------------------------------------------------
+stage: sft                 # 监督微调
+do_train: true
+# finetuning_type: full = 全参微调, **本框架唯一允许的 llama_factory 训练方式**
+# (LoRA/QLoRA 已下线 2026-08-20, 提交侧会硬拒 lora/qlora)。显存估算 (bf16, H20 141GB):
+#   权重 bf16 ~8.6GB + AdamW fp32 主权重+moment 约 3× 权重 = ~35GB + 梯度/激活,
+#   单卡 batch 1 足够。想省显存只能降数据行数 / epochs。
+finetuning_type: full
+
+# ---- 数据集 ---------------------------------------------------------------
+# dataset 名必须注册在**本次 run 自带的** llama_factory 副本
+# `<run>/workspace/public/backend/llama_factory/llama_factory/data/dataset_info.json`
+# 里 (绝不写 source tree)。示例用 `identity`; 换成你自己的数据集名, 并在 run 副本
+# 注册对应条目 (file_name 指向提交的净化副本, 见 SUBMIT_GUIDE.md §4.1)。
+dataset: identity
+
+# template 必须匹配模型族。Qwen3-4B-Base 用 qwen3 / qwen3_nothink。
+template: qwen3_nothink
+
+# 序列长度。短问答 2048 足够; 长 CoT/数学题可上调 (显存随此线性增长)。
+cutoff_len: 2048
+# 冒烟验证用: 限制样本数, 快速跑通全链路。正式训练去掉或放大。
+max_samples: 12
+preprocessing_num_workers: 8
+dataloader_num_workers: 4
+
+# ---- 输出/日志 (output_dir / dataset_dir / report_to 会被框架 CLI 覆盖, 可不用管) -----
+logging_steps: 1
+save_steps: 999           # 冒烟: 只在训练结束存一次 ckpt
+overwrite_output_dir: true
+plot_loss: true
+
+# ---- 训练超参 ---------------------------------------------------------------
+per_device_train_batch_size: 1
+gradient_accumulation_steps: 1   # 冒烟: 12 条 × 1 epoch → 12 步。正式训练调大
+learning_rate: 1.0e-5            # 全参 SFT 常用 1e-6 ~ 5e-5
+num_train_epochs: 1.0
+lr_scheduler_type: cosine
+warmup_ratio: 0.1
+bf16: true                       # H20 (sm_90) 支持 bf16; 不要同时开 fp16
+ddp_timeout: 180000000
+
+# ---- 评测 (框架在 stage-2 起 vLLM serve, stage-3 跑评测; 无需在此配置) ----
+# 提交侧由 state["eval_all"] (bench_id + limit) 决定测哪个 benchmark、采多少样本。
+# 冒烟验证用 limit=10; 正式用默认 500。

@@ -1,0 +1,37 @@
+# Python-generated files
+__pycache__/
+*.py[oc]
+build/
+dist/
+wheels/
+*.egg-info
+.pytest_cache/
+
+# Secrets / local config
+.env
+.env.*
+
+# Virtual environments
+.venv
+.venv_*/
+
+# Runtime artifacts
+runs/
+workspace/
+workspaces/
+logs/
+**/*.log
+
+# bash backend request/response logs (generated at runtime and by tests)
+tools/bash_backend/data/
+
+# Editors / tooling
+.vscode/
+.idea/
+.codex/
+.claude/
+
+# OS/editor junk
+.DS_Store
+Thumbs.db
+desktop.ini

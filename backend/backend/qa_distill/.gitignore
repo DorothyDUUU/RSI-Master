@@ -1,0 +1,10 @@
+# 本地配置 (含真实 api_key), 不入库
+config/config.yaml
+config/config.local.yaml
+
+# 蒸馏产物
+output/
+
+# Python 缓存
+__pycache__/
+*.pyc

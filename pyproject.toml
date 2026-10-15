@@ -1,0 +1,58 @@
+[project]
+name = "rsi-master"
+version = "0.1.0"
+description = "EvoMaster: an agent framework for self-evolving research workflows"
+requires-python = "==3.12.3"
+dependencies = [
+    "anthropic>=0.69.0",
+    "datasets==5.0.0",
+    "docker>=7.1.0",
+    "fastapi>=0.139.0",
+    "huggingface-hub>=0.30.0",
+    "httpx>=0.27.0",
+    "jinja2>=3.1.6",
+    "mcp>=1.26.0",
+    "numpy>=1.24.0",
+    "nvitop>=1.7.0",
+    "openai>=2.26.0",
+    "pandas==2.3.3",
+    "psutil>=5.9.0",
+    "pyarrow==25.0.0",
+    "pydantic>=2.0.0",
+    "python-dotenv>=1.0.0",
+    "pyyaml>=6.0.0",
+    "requests>=2.31.0",
+    "socksio>=1.0.0",
+    "tqdm>=4.66.0",
+    "transformers>=4.50.0",
+    "urllib3>=2.0.0",
+    "uvicorn>=0.30.0",
+]
+
+# Optional: the standalone search tools (backend/huggingface_search_cli,
+# backend/backend/search_cli's arxiv + scholar verbs). Not needed to run the
+# cc_rollout playground.
+[project.optional-dependencies]
+search = [
+    "arxiv>=2.1.0",
+    "click>=8.1.0",
+]
+
+# Optional: the PostTrainBench path in bmk_everything/framework, which delegates
+# to UK AISI's Inspect. Imported lazily, so the base install does not need it.
+inspect = [
+    "inspect-ai>=0.3.0",
+    "inspect-evals>=0.3.0",
+]
+
+[dependency-groups]
+dev = [
+    "pytest>=8.0.0",
+]
+
+[[tool.uv.index]]
+url = "https://mirrors.aliyun.com/pypi/simple/"
+default = true
+
+[tool.pytest.ini_options]
+testpaths = ["evomaster", "tools"]

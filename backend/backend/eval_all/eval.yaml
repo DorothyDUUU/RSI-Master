@@ -1,0 +1,18 @@
+title: 'eval_all: unified benchmark suite evaluation backend'
+description: |
+  Wrapper around the benchmark suite unified evaluation framework
+  (framework/run_eval.py). Unlike the per-benchmark eval_* modules, no scoring
+  logic lives here — a bench_id selects any of the ~249 benches in
+  benchmark suite/format/, and the bench's own config governs prompt/scoring.
+  This is the stage-3 eval used when evaluation.backend == "eval_all".
+scoring: delegated to benchmark suite framework (run_eval.py <bench_id>)
+runners:
+  - legacy_runner: gsm8k (meta_data.accuracy)
+  - generic_runner: all other benches (meta_data.observed_reward)
+incomplete_policy: partial-tolerant — a numeric observed metric over completed
+  samples still scores (status=partial); only a total absence of numeric score fails.
+limit_policy: positive limit always (default 500); never -1
+external_assets:
+  - type: repo
+    source: $BENCHMARK_ROOT/framework
+    state: read-only dependency

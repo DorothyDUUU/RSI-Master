@@ -1,0 +1,58 @@
+# cc_rollout — default config: cc_naive mode (no ExpOS; one CC rolls out end to end).
+#
+# This file is the naive template / default entry point. Real experiments should
+# use a per-experiment snapshot instead — copy this file, change bench_id +
+# run_id + suffix, and leave the template alone:
+#   <bench>_<size>_naive_<date>.yaml       e.g. aime2025_4b_naive.yaml
+#   <bench>_<size>_with_expos_<date>.yaml  e.g. aime2025_4b_with_expos.yaml
+#
+# Paths below are examples — point them at your own checkout. `run.public_dirs`
+# is the host-directory allowlist passed to `claude --add-dir`; the workspace is
+# always reachable, these are the extra trees the agent may read.
+#
+# auth_token: any non-empty placeholder works against an open router. It must NOT
+#   be empty — the claude CLI treats an empty token as "Not logged in" and exits
+#   rc=1 immediately. If you switch to a router that checks credentials, override
+#   it from the environment via CC_ROLLOUT_AUTH_TOKEN instead of committing a key.
+verbose: true
+mode: cc_naive                # cc_naive | cc_with_expos (see config_cc_with_expos.yaml)
+run:
+  run_id: cc_rollout_4b
+  base_model: /path/to/your/models/Qwen/Qwen3-4B-Base   # base model for the training run
+  public_dirs:                # --add-dir allowlist
+  - /path/to/your/benchmark-root     # benchmark specs (format/<bench_id>/BENCHMARK.md)
+  - /path/to/your/repo/public        # built envs + models + datasets (see README)
+  - /path/to/your/venv
+  single_agent_running_time_seconds: 3600   # per-agent wall-clock budget
+  max_running_time_seconds: null            # hard global deadline (null = unlimited)
+eval:
+  backend: eval_all           # which backend/backend/eval_* module this run uses
+  bench_id: aime2025          # benchmark id (→ state.eval_all.bench_id, passed to submit)
+  limit: 500                  # samples scored per eval
+  max_tokens: 0               # 0 = bench default
+  max_workers: 0              # 0 = auto
+  serve_gpu_memory_utilization: 0.95
+  serve_max_model_len: 32768  # 4B uses 32768; larger models need more. Under
+                              # cc_naive this only feeds the README contract text.
+gpu_backend:
+  local_port: 8989
+  gpu_request: 1
+  priority: high
+claude:
+  bin: claude
+  permission_mode: bypassPermissions
+  # base_url: leave unset to use the claude CLI's own default endpoint. Set it to
+  #   an Anthropic-Messages-compatible router if you serve your own model.
+  # base_url: https://your-router.example.com/v1
+  auth_token: 'sk-123'       # placeholder against an open router; must be non-empty
+  # model: unset → the claude CLI's built-in model ids. Set it when your router
+  #   serves a single model that every Claude tier should be mapped onto.
+workspace:
+  public_seeds:
+    gpu_backend: true
+    backend_modules:
+      eval_all: true
+      slime: true
+      search_cli: true
+      submit_pipeline: false   # naive builds its own pipeline; with_expos seeds it
+      vllm: true

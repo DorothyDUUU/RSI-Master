@@ -1,0 +1,29 @@
+# search_cli Configuration
+# ==========================
+# Read by search_cli.client / server / cli. Env vars take precedence:
+#   SEARCH_URL             full server URL override (client side)
+#   SEARCH_HOST/SEARCH_PORT  host/port override
+
+# ---- Server connection (client side) ----
+backend:
+  host: localhost
+  port: 8991
+
+# ---- HTTP timeouts (seconds) ----
+timeouts:
+  probe: 3          # health-check probe timeout
+  request: 1800     # search request timeout (heavy download/materialize of multi-GB
+                    # sources can exceed 10 min; keep >= the agent tool subprocess
+                    # timeout so server-proxied calls don't abort before local ones)
+
+# ---- Server-side defaults ----
+server:
+  host: 0.0.0.0
+  port: 8991
+  log_level: info
+
+# ---- Search defaults ----
+# Honored by `search` (hf.search_datasets) when --limit is omitted.
+# Kept at 100 to match the previous hardcoded default (was: 10, but never wired up).
+defaults:
+  max_results: 100

@@ -1,0 +1,29 @@
+# ExpOS Backend Configuration
+# ============================
+# Read by expos.backends.client / server / cli.
+
+# ---- Server connection ----
+backend:
+  host: localhost
+  port: 8990
+  # Full URL: http://{host}:{port}
+
+# ---- HTTP timeouts (seconds) ----
+timeouts:
+  submit: 7200        # Worst-case training + eval wall clock.
+  status: 30          # Trial status lookup.
+  connect: 10
+
+# ---- Server-side defaults ----
+server:
+  # Path where the server persists trial records and receipts.
+  # If relative, resolved against the ExperimentOS root at runtime.
+  trials_dir: state/backend_trials
+  # Active driver. Options:
+  #   - pipelines (default): package driver dispatching on training_mode
+  #     (llama_factory_sft -> SFT -> vllm serve -> eval;
+  #      slime_sft -> data preflight + launch_sft.sh training, eval skipped).
+  #   - pipeline_llama_factory_gsm8k: legacy alias for `pipelines` (kept for
+  #     back-compat with old run configs).
+  #   - stub: no-op receipt; only for tests.
+  driver: pipelines

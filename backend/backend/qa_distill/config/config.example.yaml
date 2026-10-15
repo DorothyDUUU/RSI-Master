@@ -1,0 +1,44 @@
+# =============================================================
+# qa_distill 配置模板
+#
+# 用法:
+#   cp config.example.yaml config.yaml   # 然后填入真实 api_key / base_url
+#   python examples/example_qa_distill.py
+#
+# 路径约定: 本文件里的相对路径 (prompts / output_dir) 一律按【本文件所在目录】
+# 解析。api_key / base_url 留空时, 会回退到 .env 或环境变量
+# OPENAI_API_KEY / OPENAI_BASE_URL。
+# =============================================================
+
+# ---- 模型 / API ----
+qa_distill:
+  model:
+    provider: openai
+    api_key: ""                    # 留空则用环境变量 OPENAI_API_KEY
+    base_url: ""                   # 留空则用环境变量 OPENAI_BASE_URL
+    model: "glm-5.2"               # 可用: glm-5.2 / kimi-k2.7-code / deepseek-v4-flash / deepseek-v4-pro (the teacher router)
+    rate_limit: 20                 # 全局每分钟请求数 (所有并发 worker 共享限速)
+    max_tokens: 2048
+    temperature: 0.7
+
+  # ---- Prompt 模板 (相对本文件目录) ----
+  prompts:
+    system_prompt_path: "../prompts/system/qa_generator.md"
+    user_prompt_path: "../prompts/user/qa_generator.md"
+
+  # ---- 输出 ----
+  output_data:
+    output_dir: "../output"        # 相对本文件目录; 绝对路径亦可
+    experiment_name: "qa_distill_demo"
+    need_time_stamp: false         # true 时在 experiment_name 下再按时间戳建子目录
+
+# ---- 飞书告警 (可选, 用于长批量任务完成/失败通知) ----
+feishu:
+  keyword: "qa_distill 通知"
+  url: ""                          # 飞书机器人 Webhook URL; 留空表示不用飞书
+
+# ---- 日志 (可选) ----
+logging:
+  level: INFO
+  format: "[%(asctime)s] [%(levelname)s] [%(name)s:%(lineno)d] - %(message)s"
+  file: ""                         # 留空只打 stdout; 填路径则同时落盘

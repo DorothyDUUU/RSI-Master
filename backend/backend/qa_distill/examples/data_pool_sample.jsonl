@@ -1,0 +1,3 @@
+{"input": {"source": "线性代数"}, "system_prompt_kwargs": {"language": "中文"}, "user_prompt_kwargs": {"topic": "矩阵乘法的计算复杂度", "difficulty": "基础", "num": 2}}
+{"input": {"source": "概率论"}, "system_prompt_kwargs": {"language": "中文"}, "user_prompt_kwargs": {"topic": "条件概率与贝叶斯公式的区别", "difficulty": "中等", "num": 2}}
+{"input": {"source": "机器学习"}, "system_prompt_kwargs": {"language": "中文"}, "user_prompt_kwargs": {"topic": "过拟合的成因与缓解手段", "difficulty": "中等", "num": 2}}

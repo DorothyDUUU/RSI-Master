@@ -1,0 +1,37 @@
+# ============================================================================
+# slime SFT 训练配置示例 — Qwen3-4B-Base 多卡 (slime_sft / slime-多卡训练)
+# ============================================================================
+#
+# 与 slime_sft_qwen3_4b_single_gpu.yaml 同契约 (键 → launch_sft.sh env, 框架
+# 解析 + 合并 + 告警), 区别只在**并行度**: 稠密模型走张量并行 (TP) 扩展。
+#
+# 并行度约束: world_size = TP × EP × CP × PP(=1) == NUM_GPUS。
+#   - 稠密模型 (无 MoE): EP 固定 1。
+#   - Qwen3-4B GQA (num_query_groups=2): TP 只能 1 或 2。
+#   - CP 在 seq_length>4096 时启用; 默认 CP=1。
+#   - 因此多卡只有 TP=2 × EP=1 × CP=1 → NUM_GPUS=2 这一档 (4 卡会违反 TP≤2)。
+#
+# 验证 harness 用 launch_sft_smoke.sh (4B 稠密入口) 在 gpu-host 上用
+# GPU 0,1 端到端验证本配置 (ray 起 2 卡 actor, TP=2 张量并行训练 1 步)。
+# ============================================================================
+
+model_dir: <repo>/public/models/Qwen/Qwen3-4B-Base
+torch_dist_dir: <repo>/public/models/Qwen/Qwen3-4B-Base_torch_dist
+
+num_epoch: 1
+
+# ---- 并行度 (多卡: TP=2 × EP=1 = 2 卡) ---------------------------------------
+num_gpus: 2     # ray 分配卡数 == world_size (2 卡)
+tp_size: 2      # 张量并行 2; GQA 约束 ≤ 2
+ep_size: 1      # 稠密模型专家并行固定 1
+has_nvlink: 0
+
+# ---- seq_length & CP (用 check_seq_length.py 确认) --------------------------------
+# 每次提交前必须跑 check_seq_length.py 确认推荐值, 写入下面两行。
+# 默认 seq_length=4096, CP=1 (seq_length<=4096 时 CP 无收益)。
+# 超过 4096 时建议开 CP, 但必须调整 TP/EP 使 TP×EP×CP = NUM_GPUS。
+seq_length: 4096           # 最大序列长度 (128 对齐)
+max_tokens_per_gpu: 4096   # 必须与 seq_length 一致
+# cp_size: 1               # 上下文并行; 默认为 1
+
+# output_dir / ckpt_dir 默认 = workspace / workspace/checkpoints (见单卡版注释)。

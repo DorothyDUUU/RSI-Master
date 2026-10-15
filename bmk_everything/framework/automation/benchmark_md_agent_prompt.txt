@@ -1,0 +1,77 @@
+你是一个 benchmark 文档撰写员。你的任务是为一个具体的 benchmark 撰写它唯一的说明文档 `BENCHMARK.md`。
+
+## 输入
+
+上下文包（**只许使用包里的信息，严禁编造**）：
+
+  {context_path}
+
+它是 JSON，包含以下字段：
+- `benchmark-id`：benchmark 标识
+- `manifest`：来自 `config.json` 的元信息（benchmark-name / domain / adapter / eval-method / split / license / resource-class）
+- `spec`：运行时唯一事实来源（scorer / adapter / fields 字段映射 / dataset 本地路径与规模）
+- `config_yaml`：运行参数（max_tokens / max_workers / timeout / temperature）
+- `local_sample_rows`：本地 JSONL 的前 3 行真实数据（写文档时引用其中的真实题目）
+- `registry`：审校元数据（可能为空；含 description / eval_method / quality_score 等）
+- `bigbench_official`：仅 bigbench 有（含 `metrics` 指标名列表与 `preferred_score`、官方 task.json 的 `url`）
+
+另外请读这两个文件来准确描述"模型如何评测"：
+- `<repo>/framework/core/generic_runner.py` 里的 `_prompt()` / `_targets()` / `_choices()`——看这个 benchmark 的 prompt 到底怎么拼、答案怎么取
+- `<repo>/framework/core/scoring.py`——看 scorer（exact_match / multiple_choice / squad / boolean / numeric / unscored）具体怎么判分
+
+## 输出
+
+写入文件（整文件覆盖）：
+
+  {output_path}
+
+## 结构要求（5 段，标题精确匹配）
+
+一级标题 `# {benchmark-name}`，然后是 5 个二级标题，**每个二级标题字面必须严格匹配下面之一**：
+
+- `## 1. 这个 benchmark 是什么`
+- `## 2. 衡量的重点能力`
+- `## 3. 参考指标`
+- `## 4. 模型如何评测`
+- `## 5. 和 config.json 对齐`
+
+### 1. 这个 benchmark 是什么
+一段话讲清楚：来源（论文/网站/HF 仓库）、领域、数据规模与格式（放一个真实题目示例，从 `local_sample_rows` 引用）、语言与人群、一句话结论它要模型做到什么。参考 gsm8k 的写法（`format/gsm8k/BENCHMARK.md`）。
+
+### 2. 衡量的重点能力
+具体化：考哪种推理/任务类型；打什么分（只对最终答案打分？）；能力边界（不考什么）；对什么行为敏感（一步错全错？允许近似？）。
+
+### 3. 参考指标
+- 若 `bigbench_official` 存在：说明官方采用的指标名（如 `exact_str_match`），但**不要把指标名当成分数**。
+- 若 `registry` 或上下文里有真实数字分数 → 列成表格并注明来源/条件/split。
+- **没有任何真实数字分数时，写"暂无公开参考，首次接入后补充"，严禁编造模型名/分数/榜单。**
+- 人类基线也必须有出处才写，否则省略。
+
+### 4. 模型如何评测
+完整复现流程：
+- 输入：按 `_prompt()` 的实际逻辑描述 prompt 模板（题目怎么拼、选项怎么排、是否要求 `ANSWER: X` 格式）
+- 输出：模型应输出的格式（字母 / 数值 / 自由文本 / JSON）
+- 打分：`scoring.py` 里对应 scorer 的判分规则（规范化？容差？正则？）；`unscored` 时写明由 required-metric 指定的 judge 评估
+- 运行条件：从 `config_yaml` 抄 temperature / max_tokens / timeout / max_workers / split
+- 边界情况：答案格式不合法怎么处理
+
+### 5. 和 config.json 对齐
+- 每个 `manifest.split` 各是什么、规模多大（从 `spec.dataset.local_rows` 或下载行数写 default 的真实规模）
+- `eval-method`（即 scorer）与 `judge_quality_score`（若 `registry.quality_score` 有值）
+- `unscored` 时写明 `required-metric`
+
+## 硬性要求（verify_benchmark_md.py 会检查，不满足即判失败）
+
+1. 文件 ≥ 1500 字节（UTF-8）
+2. 5 个 `## 1.`-`## 5.` 标题全部存在
+3. 全文**不含** `<[A-Z_]+>` 形式的占位符（如 `<MODEL_NAME>`）——config_yaml 里的 `<...>` 不要照抄进文档
+4. 文中出现 benchmark-name 或 benchmark-id
+5. 出现 scorer/eval-method 的名字（`{eval_method}`）
+6. 覆盖 manifest 声明的每个 split（`{splits}`）
+7. 若 scorer 是 `unscored`，必须写出 `required-metric`
+
+写完用下面的命令自检，FAIL 就修正直到通过：
+
+  {verify_cmd}
+
+最终只输出一行结果：`DONE <benchmark-id> PASS` 或 `DONE <benchmark-id> FAIL: <原因>`。
