@@ -252,3 +252,8 @@ uv run python -m pytest -q      # framework + tools test suites
   url={https://arxiv.org/abs/2609.35561}
 }
 ```
+
+## License
+
+RSI-Master is licensed under the [Apache License 2.0](LICENSE).
+Vendored third-party code retains its respective licenses and notices.
