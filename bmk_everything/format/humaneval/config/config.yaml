@@ -1,0 +1,16 @@
+general:
+  anthropic_api_base: <ANTHROPIC_API_BASE>
+  anthropic_api_token: <ANTHROPIC_API_TOKEN>
+  openai_api_base: <OPENAI_API_BASE>
+  openai_api_token: <OPENAI_API_TOKEN>
+  model: <MODEL_NAME>
+  split: <SPLIT_NAME>
+  output_dir: data/output/<BENCHMARK_ID>/<TRIAL_NAME>
+
+custom:
+  dataset_path: openai/openai_humaneval
+  epochs: 5
+  max_tokens: 4000
+  max_connections: 1
+  verify_timeout: 30
+  temperature: 0.0

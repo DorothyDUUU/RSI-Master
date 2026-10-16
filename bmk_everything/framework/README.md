@@ -1,7 +1,9 @@
 # framework/ 评测框架
 
 BmkEverything 的评测框架：**核心运行时**（`core/`）+ **自动化脚本**（`automation/`）+ **单元测试**（`tests/`）。
-`format/` 下只放 benchmark 目录（当前 244 个可跑：241 个自动接入 + 3 个手写 legacy）、`run_eval.py` 和文档；数据落在 `data/datasets/`。统一运行环境是 `framework/.venv`。
+候选开源包包含论文展示结果的 24 个评测定义；数据、外部评测器和其环境需单独准备。
+请先阅读 [安装与路径配置](../SETUP.md) 和 `../paper_manifest.json`，准备所选评测的数据和 `framework/.venv`。
+`BENCHMARK_ROOT` 控制评测定义及通用 runner 的数据根目录；未设置时使用本目录的父目录。
 
 > 使用教程（统一接口怎么用、benchmark 怎么接入/校验、新 bench 怎么用）见 **[`framework/USAGE.md`](./USAGE.md)**。
 

@@ -1,134 +1,68 @@
----
-BACKEND_DESCRIPTIONS
-vLLM 0.27.1 local serving workspace — OpenAI-compatible API.
-Invoke: `vllm serve <model_dir> --port 8101` (engine args in docs/configuration).
-Convenience launcher: `bash scripts/run_qwen_3-1.8.sh` (Qwen3-1.7B, port 8101).
----
+# vLLM serving environment
 
-# vLLM 0.27.1 — Local Serving Workspace
+The existing deployment reports `vllm==0.27.1+cu129`, `torch==2.13.0+cu129`,
+`transformers==5.15.1`, and `numpy==2.3.5` (metadata inspected on 2026-10-15).
+This is an observed deployment, not a clean-install or GPU validation result.
+Keep this environment separate from slime, whose build scripts pin a different
+PyTorch version and NumPy 1.x.
 
-vLLM inference engine for local model serving. **Version: 0.27.1**.
+## Install on a Linux NVIDIA GPU host
 
-## Environment
-
-```bash
-source <repo>/public/vllm_env_0819/bin/activate
-```
-
----
-
-## Directory Layout
-
-```
-vllm/
-├── docs/       # Official vLLM 0.11.0 documentation
-├── scripts/    # Launch scripts for serving models
-└── README.md
-```
-
-### `scripts/` — Launch Scripts
-
-| File | Description |
-|---|---|
-| `run_qwen_3-1.8.sh` | Serve Qwen3-1.7B on port 8101 |
-
-Usage:
-```bash
-bash scripts/run_qwen_3-1.8.sh
-```
-
-### `docs/` — Documentation Index
-
-Official vLLM 0.11.0 docs. Key entry points:
-
-```
-docs/
-├── README.md                              # Docs overview
-├── getting_started/
-│   └── quickstart.md                      # Installation & first launch
-├── configuration/
-│   ├── engine_args.md                     # EngineArgs reference (--gpu-memory-utilization, --max-model-len, etc.)
-│   ├── serve_args.md                      # `vllm serve` CLI arguments
-│   ├── optimization.md                    # Performance tuning (chunked prefill, prefix caching, etc.)
-│   ├── conserving_memory.md               # KV cache offloading, quantization, etc.
-│   └── env_vars.md                        # Environment variable reference
-├── serving/
-│   ├── openai_compatible_server.md        # OpenAI-compatible API (chat/completions, /models)
-│   ├── offline_inference.md               # Python API for batch inference (LLM.generate)
-│   ├── parallelism_scaling.md             # Tensor/pipeline/data parallel scaling
-│   ├── data_parallel_deployment.md        # Multi-node data parallel serving
-│   └── expert_parallel_deployment.md      # Expert parallel for MoE models
-├── features/
-│   ├── automatic_prefix_caching.md        # APC — reduces redundant KV computation
-│   ├── lora.md                            # LoRA adapter serving
-│   ├── spec_decode.md                     # Speculative decoding
-│   ├── structured_outputs.md              # Guided decoding (JSON schema, regex, grammar)
-│   ├── tool_calling.md                    # Function calling / tool use
-│   ├── multimodal_inputs.md               # Image, video, audio inputs
-│   ├── reasoning_outputs.md               # Reasoning parser (e.g. DeepSeek-R1)
-│   ├── disagg_prefill.md                  # Disaggregated prefill & decode
-│   ├── prompt_embeds.md                   # Prompt embedding inputs
-│   └── sleep_mode.md                      # Idle weight offloading
-├── usage/
-│   ├── faq.md                             # Frequently asked questions
-│   ├── troubleshooting.md                 # Common issues & solutions
-│   ├── metrics.md                         # Prometheus metrics reference
-│   ├── reproducibility.md                 # Deterministic generation
-│   └── v1_guide.md                        # V1 engine migration guide
-├── models/
-│   ├── supported_models.md                # Full supported model list
-│   ├── generative_models.md               # Text generation models
-│   └── pooling_models.md                  # Embedding / pooling models
-├── deployment/
-│   ├── docker.md                          # Docker deployment
-│   ├── k8s.md                             # Kubernetes deployment
-│   └── nginx.md                           # Nginx reverse proxy
-├── design/
-│   ├── arch_overview.md                   # Architecture overview
-│   ├── paged_attention.md                 # PagedAttention mechanism
-│   ├── prefix_caching.md                  # Automatic prefix caching design
-│   ├── plugin_system.md                   # Plugin architecture
-│   └── ...                                # (more design docs)
-├── training/
-│   ├── rlhf.md                            # RLHF with vLLM
-│   └── trl.md                             # TRL integration
-├── cli/
-│   ├── serve.md                           # `vllm serve` command
-│   ├── chat.md                            # `vllm chat` command
-│   ├── complete.md                        # `vllm complete` command
-│   └── run-batch.md                       # `vllm run-batch` command
-├── api/
-│   └── README.md                          # API reference
-├── contributing/
-│   └── README.md                          # Contribution guide
-├── community/
-│   ├── contact_us.md                      # Discord, GitHub, etc.
-│   └── sponsors.md                        # Sponsors
-└── examples/
-    └── README.md                          # Example scripts
-```
-
----
-
-## Quick Reference
+Run from the repository root. A supported NVIDIA driver and sufficient disk and
+GPU memory are required; consult the [upstream GPU installation guide](https://docs.vllm.ai/en/latest/getting_started/installation/gpu/).
+The following is a candidate installation procedure pending a fresh GPU run.
+It intentionally lets vLLM resolve its compatible PyTorch build.
 
 ```bash
-# Serve a model (OpenAI-compatible API)
-vllm serve /path/to/model --port 8101
-
-# Common serve options:
-#   --gpu-memory-utilization 0.90    GPU memory fraction (default: 0.90)
-#   --max-model-len 4096             Max context length
-#   --tensor-parallel-size 2         Split model across 2 GPUs
-#   --enable-prefix-caching          Enable automatic prefix caching
-#   --enable-lora                    Enable LoRA adapter support
-#   --quantization awq               Load AWQ/GPTQ quantized model
-#
-# See: docs/configuration/serve_args.md for the full list.
-
-# Offline batch inference (Python)
-python -c "from vllm import LLM; llm = LLM('/path/to/model'); print(llm.generate(['Hello!']))"
-
-# Interactive chat
-vllm chat /path/to/model
+uv venv --python 3.12.3 public/vllm_env_0819
+uv pip install --python public/vllm_env_0819/bin/python \
+  'vllm==0.27.1' 'transformers==5.15.1' --torch-backend=cu129
+uv pip check --python public/vllm_env_0819/bin/python
+source public/vllm_env_0819/bin/activate
+python -c "import torch, vllm, transformers; print(torch.__version__, vllm.__version__, transformers.__version__); assert torch.cuda.is_available()"
+uv pip freeze --python public/vllm_env_0819/bin/python > vllm-environment.freeze.txt
 ```
+
+If the resolver cannot find these versions or reports conflicting dependencies,
+retain the error and resolve it before labeling this combination reproducible.
+Do not force installation with `--no-deps`. The inspected `+cu129` deployment
+may require a wheel index or wheel artifacts that are not recorded in this repo.
+
+## Verify serving and generation
+
+Use an existing local HF model. Start in a foreground terminal on an allocated
+GPU; this command does not stop other services.
+
+```bash
+source public/vllm_env_0819/bin/activate
+export MODEL_DIR=/absolute/path/to/hf-model
+vllm serve "$MODEL_DIR" --served-model-name smoke-model \
+  --host 127.0.0.1 --port 18101 --tensor-parallel-size 1 \
+  --gpu-memory-utilization 0.80 --max-model-len 4096
+```
+
+In another terminal, wait for readiness and request actual generated tokens:
+
+```bash
+curl --fail http://127.0.0.1:18101/v1/models
+curl --fail http://127.0.0.1:18101/v1/completions \
+  -H 'Content-Type: application/json' \
+  -d '{"model":"smoke-model","prompt":"The capital of France is","max_tokens":16,"temperature":0}'
+```
+
+Acceptance requires a loaded model, a successful response containing generated
+text, no CUDA errors, and a recorded GPU/driver/package inventory. A metadata
+check or `/v1/models` response alone does not verify inference.
+Stop the foreground server with Ctrl-C after the smoke run.
+
+## Pipeline integration
+
+The default pipeline activates `<repo>/public/vllm_env_0819/bin/activate`.
+The `eval_all.vllm_env` configuration can override it. Slime torch-dist checkpoints
+must first be converted to HF format; validate tokenizer, EOS, and rope settings
+using the repository's serving guard before evaluating. A successful 4K smoke
+run does not verify 35B training or 32K memory limits.
+
+The bundled `docs/` snapshot is labeled vLLM 0.11.0 and is older than the observed
+deployment. Use the matching upstream documentation and installed
+`vllm serve --help` to verify flags.

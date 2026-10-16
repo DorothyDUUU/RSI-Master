@@ -73,7 +73,9 @@ def _normalize_none_message_content(response):
         return response
     content = message.get("content")
     reasoning = message.get("reasoning_content")
-    if content is None or content == "":
+    if content is None:
+        message["content"] = ""
+    elif content == "":
         if reasoning:
             if "</think>" in reasoning:
                 message["content"] = reasoning.split("</think>", maxsplit=1)[1].strip()
@@ -83,6 +85,7 @@ def _normalize_none_message_content(response):
                 message["content"] = reasoning.strip()
         else:
             message["content"] = ""
+    if content is None or content == "":
         response._content = json.dumps(payload, ensure_ascii=False).encode("utf-8")
     return response
 

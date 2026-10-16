@@ -1,0 +1,33 @@
+{
+  "paper_url": "https://arxiv.org/html/2609.35561v2",
+  "benchmark_ids": [
+    "aime2025",
+    "arenahardwriting",
+    "bfcl",
+    "gpqa",
+    "gsm8k",
+    "healthbench_easy",
+    "humaneval",
+    "lexam",
+    "legalbench",
+    "medcasereasoning",
+    "medxpertqa",
+    "wmdp-bio",
+    "econlogicqa",
+    "earthse-earth-silver",
+    "cti-mcq",
+    "cmphysbench",
+    "pre-flight",
+    "ckqa",
+    "aime2026",
+    "livecodebench",
+    "horizonmath",
+    "scicode-verified",
+    "healthbench_professional",
+    "hle"
+  ],
+  "optional_not_shipped": [
+    "imo-answerbench"
+  ],
+  "protocol_status": "candidate: semantic and end-to-end verification incomplete"
+}

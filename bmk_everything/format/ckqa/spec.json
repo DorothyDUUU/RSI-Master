@@ -1,0 +1,8 @@
+{
+  "benchmark-id": "ckqa", "benchmark-name": "CPA-KQA (CKQA table alias)", "adapter": "dataprep_eval",
+  "dataset": {"path": "data/datasets/ckqa", "split": "test", "revision": "771688905d8c5c7e76acb83d6be615bb1027e066"},
+  "source-key": "fincdm", "dataset-name": "FinCDM-CPA-KQA", "expected-rows": 311,
+  "official-evaluation-revision": "336f354684c1d5541e33e7f7a2738f28226640f1",
+  "metric": "accuracy", "resource-class": "light",
+  "license": {"spdx": "apache-2.0", "evidence": "https://github.com/OpenDCAI/Data-Preparation-Bench/blob/336f354684c1d5541e33e7f7a2738f28226640f1/LICENSE"}
+}

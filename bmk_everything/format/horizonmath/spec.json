@@ -1,0 +1,12 @@
+{
+  "benchmark-id": "horizonmath",
+  "adapter": "legacy_runner",
+  "scorer": "official_validator",
+  "official-commit": "a34c47278697fda59d566ba11b2087da1bcf4454",
+  "dataset": {"path": "external/HorizonMath/data/problems_full.json", "rows": 113},
+  "evaluation-modes": {
+    "ground_truth_computable": 71,
+    "benchmark_best_known": 33,
+    "new_construction": 9
+  }
+}

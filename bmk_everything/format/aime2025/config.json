@@ -1,0 +1,11 @@
+{
+    "benchmark-id": "aime2025",
+    "benchmark-name": "AIME 2025",
+    "source": "https://huggingface.co/datasets/AI-MO/aimo-validation-aime",
+    "split": [
+        "default",
+        "sample_10",
+        "sample_100"
+    ],
+    "judge_quality_score": 100
+}

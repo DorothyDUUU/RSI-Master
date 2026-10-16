@@ -1,0 +1,32 @@
+{
+  "adapter": "hf_multiple_choice",
+  "benchmark-id": "wmdp-bio",
+  "benchmark-name": "WMDP",
+  "dataset": {
+    "path": "data/datasets/wmdp-bio",
+    "split": "test",
+    "local_rows": 1273,
+    "hf": {
+      "path": "cais/wmdp",
+      "name": "wmdp-bio",
+      "revision": "7125571f22f032c56415e7980f48d877dd830ff8",
+      "split": "test"
+    }
+  },
+  "domain": "domain_knowledge",
+  "fields": {
+    "choices": "choices",
+    "prompt": "question",
+    "target": "answer"
+  },
+  "license": {
+    "evidence": "https://huggingface.co/api/datasets/cais/wmdp",
+    "spdx": "mit"
+  },
+  "resource-class": "light",
+  "preserve-none-choice": true,
+  "scorer": "multiple_choice",
+  "selection": "curated-primary-metadata-and-schema-verified",
+  "source": "https://huggingface.co/datasets/cais/wmdp",
+  "target-transform": "choice_index"
+}

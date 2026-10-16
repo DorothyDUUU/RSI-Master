@@ -1,0 +1,10 @@
+{
+    "benchmark-id": "gpqa",
+    "benchmark-name": "GPQA",
+    "source": "https://huggingface.co/datasets/Idavidrein/gpqa",
+    "split": [
+        "default",
+        "sample_100"
+    ],
+    "judge_quality_score": 85
+}

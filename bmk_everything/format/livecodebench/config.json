@@ -1,0 +1,11 @@
+{
+  "benchmark-id": "livecodebench",
+  "benchmark-name": "LiveCodeBench Code Generation Lite v6",
+  "source": "https://github.com/LiveCodeBench/LiveCodeBench",
+  "split": ["recent_2025", "full_v6"],
+  "domain": "code_generation",
+  "eval-method": "execution",
+  "integration-status": "runnable",
+  "adapter": "legacy_runner",
+  "judge_quality_score": 100
+}

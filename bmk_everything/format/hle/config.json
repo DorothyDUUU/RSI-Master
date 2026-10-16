@@ -1,0 +1,21 @@
+{
+  "benchmark-id": "hle",
+  "benchmark-name": "Humanity's Last Exam",
+  "domain": "domain_knowledge",
+  "adapter": "legacy_runner",
+  "eval-method": "llm_judge_hle",
+  "integration-status": "runnable",
+  "source": "https://huggingface.co/datasets/cais/hle",
+  "split": [
+    "default",
+    "math",
+    "physics",
+    "bio-medicine",
+    "cs-ai",
+    "engineering",
+    "chemistry",
+    "humanities-social-science",
+    "other"
+  ],
+  "judge_quality_score": 95
+}

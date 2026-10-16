@@ -41,8 +41,7 @@ SLIME_PYTHON="${SLIME_PYTHON}"
 # Fail loudly rather than silently falling back to PATH's python3: the whole
 # slime stack (torch/megatron/sglang) lives only in that env. Build it with
 # backend/backend/slime/docs/env_construct/, then export SLIME_ENV.
-: "${SLIME_PYTHON:?SLIME_ENV is not set — see backend/backend/slime/docs/env_construct/README.md}"
-: "${SLIME_CONVERT_TO_HF:?SLIME_CONVERT_TO_HF is not set — see backend/backend/slime/docs/env_construct/README.md}"
+: "$${SLIME_PYTHON:?SLIME_ENV is not set — see backend/backend/slime/docs/env_construct/README.md}"
 SLIME_PREFLIGHT="${SLIME_PREFLIGHT}"
 SLIME_LAUNCH_SFT="${SLIME_LAUNCH_SFT}"
 SLIME_DATA_FILE="${SLIME_DATA_FILE}"
@@ -64,6 +63,7 @@ SLIME_CP_SIZE="${SLIME_CP_SIZE}"
 # stage-1.5 torch_dist -> HF 转换 (vLLM 只认 HF safetensors).
 SLIME_HF_DIR="${SLIME_HF_DIR}"
 SLIME_CONVERT_TO_HF="${SLIME_CONVERT_TO_HF}"
+: "$${SLIME_CONVERT_TO_HF:?SLIME_CONVERT_TO_HF is not set — see backend/backend/slime/docs/env_construct/README.md}"
 SLIME_MEGATRON_LM="${SLIME_MEGATRON_LM}"
 SLIME_VOCAB_ARGS="${SLIME_VOCAB_ARGS}"
 SLIME_ADD_MISSING="${SLIME_ADD_MISSING}"

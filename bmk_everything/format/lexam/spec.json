@@ -1,0 +1,37 @@
+{
+  "_candidate": "lexam",
+  "_candidate_notes": "License cc-by-4.0; English + German; ~1028 (16-choice) + 550 (32-choice) + 1655 (4-choice) + 1463 (8-choice) + 2541 open questions; use English subset for integration.",
+  "_domain_first_level": "law",
+  "_quality_signal": "arXiv 2505.12864 / HF likes 46 / downloads 1708 / cc-by-4.0",
+  "_subcategory": "legal-reasoning",
+  "_why_recognized": "2025 peer-reviewed benchmark showing frontier LLMs lag far behind legal-exam performance; recognized successor in the legal exam line.",
+  "_year": 2025,
+  "adapter": "hf_multiple_choice",
+  "benchmark-id": "lexam",
+  "benchmark-name": "LEXam",
+  "dataset": {
+    "path": "data/datasets/lexam",
+    "split": "test",
+    "local_rows": 1028,
+    "hf": {
+      "path": "LEXam-Benchmark/LEXam",
+      "name": "mcq_16_choices",
+      "revision": "31e57ae395f92ed7284a4c28d278c55da892b898",
+      "split": "test"
+    }
+  },
+  "domain": "domain_knowledge",
+  "fields": {
+    "choices": "choices",
+    "prompt": "question",
+    "target": "gold"
+  },
+  "license": {
+    "evidence": "https://huggingface.co/api/datasets/LEXam-Benchmark/LEXam",
+    "spdx": "cc-by-4.0"
+  },
+  "resource-class": "light",
+  "scorer": "multiple_choice",
+  "selection": "domain-knowledge-survey-2026-verified",
+  "source": "https://huggingface.co/datasets/LEXam-Benchmark/LEXam"
+}

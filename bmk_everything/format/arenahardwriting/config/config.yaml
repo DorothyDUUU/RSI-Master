@@ -1,0 +1,18 @@
+general:
+  anthropic_api_base: <ANTHROPIC_API_BASE>
+  anthropic_api_token: <ANTHROPIC_API_TOKEN>
+  openai_api_base: <OPENAI_API_BASE>
+  openai_api_token: <OPENAI_API_TOKEN>
+  model: <MODEL_NAME>
+  split: <SPLIT_NAME>
+  output_dir: data/output/<BENCHMARK_ID>/<TRIAL_NAME>
+
+custom:
+  benchmark: arena-hard-v2.0
+  judge_model: deepseek-v4-flash
+  reasoning_effort: null
+  max_tokens: 16384
+  # Candidate generation concurrency; independent of judge_workers.
+  max_workers: 16
+  judge_workers: 64
+  temperature: 0.0

@@ -1,0 +1,17 @@
+{
+  "benchmark-id": "econlogicqa",
+  "benchmark-name": "EconLogicQA",
+  "domain": "domain_knowledge",
+  "adapter": "hf_exact_match",
+  "eval-method": "exact_match",
+  "integration-status": "runnable",
+  "source": "https://huggingface.co/datasets/yinzhu-quan/econ_logic_qa",
+  "split": [
+    "default"
+  ],
+  "license": {
+    "evidence": "https://huggingface.co/api/datasets/yinzhu-quan/econ_logic_qa",
+    "spdx": "cc-by-nc-sa-4.0"
+  },
+  "resource-class": "light"
+}

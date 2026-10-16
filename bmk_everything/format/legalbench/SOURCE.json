@@ -1,0 +1,8 @@
+{
+  "repository": "https://github.com/OpenDCAI/Data-Preparation-Bench.git",
+  "revision": "336f354684c1d5541e33e7f7a2738f28226640f1",
+  "dataset": "https://huggingface.co/datasets/lhpku20010120/Data-Prep-Bench",
+  "dataset-revision": "771688905d8c5c7e76acb83d6be615bb1027e066",
+  "upstream-file": "eval/law.jsonl",
+  "upstream-sha256": "b5e8475d34f106605897293d40ff957524141dc0f37ab1a5c9a20279fddaf25e"
+}

@@ -11,6 +11,7 @@ class AdapterSpec:
 
 
 ADAPTERS = {
+    "dataprep_eval": AdapterSpec("dataprep_eval", True, "Pinned DataPrep-Bench judge/classification protocol"),
     "legacy_runner": AdapterSpec("legacy_runner", True, "Per-benchmark run_benchmark.py"),
     "hf_exact_match": AdapterSpec("hf_exact_match", True, "Pinned Hugging Face deterministic exact match"),
     "hf_boolean": AdapterSpec("hf_boolean", True, "Pinned Hugging Face true/false exact match"),

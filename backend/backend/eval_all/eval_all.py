@@ -353,6 +353,7 @@ def main(argv: list[str] | None = None) -> int:
     # the CLI contract by forwarding the same candidate key into the child
     # environment; judge credentials remain the separate OPENAI_* variables.
     child_env = dict(os.environ)
+    child_env["BENCHMARK_ROOT"] = str(bmk_root)
     child_env["VLLM_API_KEY"] = args.api_key
 
     # 子进程: stdout+stderr 都进 run_eval.log, 供 agent 与解析器使用.

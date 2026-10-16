@@ -1,0 +1,44 @@
+{
+  "benchmark-id": "hle",
+  "benchmark-name": "Humanity's Last Exam",
+  "domain": "domain_knowledge",
+  "adapter": "legacy_runner",
+  "scorer": "unscored",
+  "required-metric": "accuracy",
+  "fields": {
+    "prompt": "question",
+    "target": "answer",
+    "answer_type": "answer_type",
+    "category": "category",
+    "image": "image"
+  },
+  "dataset": {
+    "path": "data/datasets/hle",
+    "split": "default",
+    "local_rows": 2158,
+    "sha256": "4663364783399ffce168dbc8a56bc670e498f299fb64b631f322b8847f5d327a",
+    "hf": {
+      "path": "bdytx5/hle",
+      "name": "default",
+      "revision": "main",
+      "split": "test"
+    }
+  },
+  "license": {
+    "spdx": "mit",
+    "evidence": "https://huggingface.co/datasets/cais/hle"
+  },
+  "resource-class": "heavy",
+  "validation": {
+    "required-row-fields": [
+      "id",
+      "question",
+      "image",
+      "answer",
+      "answer_type",
+      "raw_subject",
+      "category",
+      "canary"
+    ]
+  }
+}

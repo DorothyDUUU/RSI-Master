@@ -1,0 +1,25 @@
+general:
+  anthropic_api_base: <ANTHROPIC_API_BASE>
+  anthropic_api_token: <ANTHROPIC_API_TOKEN>
+  openai_api_base: <OPENAI_API_BASE>
+  openai_api_token: <OPENAI_API_TOKEN>
+  model: <MODEL_NAME>
+  split: <SPLIT_NAME>
+  output_dir: data/output/<BENCHMARK_ID>/<TRIAL_NAME>
+
+custom:
+  dataset_path: data/datasets/hle
+  dataset_revision: bdytx5/hle:test
+  dataset_sha256: 4663364783399ffce168dbc8a56bc670e498f299fb64b631f322b8847f5d327a
+  candidate_max_tokens: 65536
+  candidate_fallback_max_tokens: []
+  candidate_timeout: 300
+  candidate_retries: 3
+  candidate_workers: 8
+  grader_model: deepseek-v4-flash
+  grader_api_base: https://your-judge.example.com/v1
+  grader_api_token_env: OPENAI_API_KEY
+  grader_max_tokens: 32768
+  grader_timeout: 300
+  grader_retries: 5
+  grader_workers: 16

@@ -1,0 +1,13 @@
+{
+  "benchmark-id": "healthbench_professional",
+  "benchmark-name": "HealthBench Professional",
+  "domain": "healthcare",
+  "adapter": "legacy_runner",
+  "eval-method": "llm_judge_health",
+  "integration-status": "runnable",
+  "source": "https://huggingface.co/datasets/openai/healthbench-professional",
+  "split": [
+    "default"
+  ],
+  "judge_quality_score": 95
+}

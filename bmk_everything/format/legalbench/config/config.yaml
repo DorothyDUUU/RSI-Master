@@ -1,0 +1,13 @@
+general:
+  openai_api_base: <OPENAI_API_BASE>
+  openai_api_token: <OPENAI_API_TOKEN>
+  model: <MODEL_NAME>
+  split: <SPLIT_NAME>
+  output_dir: data/output/<BENCHMARK_ID>/<TRIAL_NAME>
+custom:
+  dataset_path: data/datasets/legalbench
+  dataset_revision: 771688905d8c5c7e76acb83d6be615bb1027e066
+  max_tokens: 4096
+  max_workers: 8
+  timeout: 180
+  judge_timeout: 180

@@ -1,0 +1,17 @@
+{
+  "benchmark-id": "pre-flight",
+  "benchmark-name": "Pre-Flight",
+  "domain": "domain_knowledge",
+  "adapter": "hf_multiple_choice",
+  "eval-method": "multiple_choice",
+  "integration-status": "runnable",
+  "source": "https://huggingface.co/datasets/AirsideLabs/pre-flight-06",
+  "split": [
+    "default"
+  ],
+  "license": {
+    "evidence": "https://huggingface.co/api/datasets/AirsideLabs/pre-flight-06",
+    "spdx": "mit"
+  },
+  "resource-class": "light"
+}

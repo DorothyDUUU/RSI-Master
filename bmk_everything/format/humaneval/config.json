@@ -1,0 +1,11 @@
+{
+  "benchmark-id": "humaneval",
+  "benchmark-name": "HumanEval",
+  "domain": "coding",
+  "adapter": "legacy_runner",
+  "eval-method": "pass_at_1_local_sandbox",
+  "integration-status": "runnable",
+  "source": "https://huggingface.co/datasets/openai/openai_humaneval",
+  "split": ["default"],
+  "judge_quality_score": 100
+}

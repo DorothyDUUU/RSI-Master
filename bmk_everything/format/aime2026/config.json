@@ -1,0 +1,11 @@
+{
+    "benchmark-id": "aime2026",
+    "benchmark-name": "AIME 2026",
+    "source": "https://huggingface.co/datasets/MathArena/aime_2026",
+    "split": [
+        "default",
+        "sample_10",
+        "sample_100"
+    ],
+    "judge_quality_score": 100
+}

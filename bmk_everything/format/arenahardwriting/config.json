@@ -1,0 +1,11 @@
+{
+  "benchmark-id": "arenahardwriting",
+  "benchmark-name": "Arena Hard Writing",
+  "domain": "writing",
+  "adapter": "legacy_runner",
+  "eval-method": "pairwise_llm_judge",
+  "integration-status": "runnable",
+  "source": "https://github.com/lm-sys/arena-hard-auto",
+  "split": ["default"],
+  "judge_quality_score": 100
+}

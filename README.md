@@ -1,5 +1,9 @@
 # RSI-Master
 
+Official code for [RSI-Master: Structuring Experiments to Guide Autonomous Model Improvement](https://arxiv.org/abs/2609.35561).
+
+This release includes Experiment OS and the `cc_rollout` playground. Reviewer-Guided Research Orchestration is outside this release; the candidate paper benchmark package includes 24 selected definitions with separately prepared data.
+
 An agent framework for self-evolving research workflows. A **playground** seeds a private
 workspace for an agent, launches it, and records what it did; the agent's job is to run a
 full research loop inside that workspace — read the benchmark spec, build training data,
@@ -18,7 +22,7 @@ roll out end to end without branching.
 | `playground/cc_rollout/` | The `cc_rollout` playground (seeding, runner, orchestrator, prompts) |
 | `configs/cc_rollout/` | Config templates (`config.yaml` = naive, `config_cc_with_expos.yaml`) |
 | `backend/` | GPU-side plumbing: `gpu_backend` HTTP client, `server`, `submit_pipeline`, eval wrappers |
-| `bmk_everything/` | The benchmark suite — `framework/` (unified eval entry point). The `format/` benchmark definitions and dataset tree are **not** in the repo; see below |
+| `bmk_everything/` | The benchmark suite — `framework/` (unified eval entry point). 24 selected benchmark definitions; datasets are prepared separately |
 | `tools/ExpOS/` | `expos` — the experiment-state / submit-pipeline CLI used by `cc_with_expos` |
 | `tools/cc_rollout_expos/` | Thin wrapper that binds `expos` to the submit pipeline |
 | `tools/bash_security/`, `tools/bash_backend/` | Sandbox filtering + the bash execution backend |
@@ -62,26 +66,22 @@ tree — `backend/backend/llama_factory/` contains the vendored training framewo
 `backend/backend/vllm/` the serving docs. Training stages activate them by absolute path
 (`<repo>/public/.../bin/activate`), so build them in place rather than symlinking.
 
-### The benchmark suite (`bmk_everything/`)
+### The paper benchmark suite (`bmk_everything/`)
 
-`bmk_everything/framework/` is the unified evaluation entry point (`run_eval.py` plus
-`core/` and `automation/`). It resolves benchmark definitions relative to itself:
+The candidate release contains the **24 distinct benchmarks with presented results**
+in the paper. See [`paper_manifest.json`](bmk_everything/paper_manifest.json) for the
+selected IDs and [the setup guide](bmk_everything/SETUP.md) for paths, environments,
+data and judge services. Other private benchmarks are outside this release.
 
-```
-bmk_everything/
-├── framework/           # in the repo: run_eval.py, core/, automation/, tests/
-└── format/              # NOT in the repo — per-benchmark specs and runners
-    └── <bench_id>/      #   BENCHMARK.md, config.json, run_benchmark.py
-```
+Datasets and third-party evaluator environments are built separately.
+[`paper_downloads.json`](bmk_everything/paper_downloads.json) records data sources
+and available preparation commands; each `format/<id>/BENCHMARK.md` describes the
+integration. LegalBench, MedCaseReasoning and CKQA use the paper's pinned
+DataPrep-Bench protocol rather than a generic task with the same name.
 
-`format/` and the dataset tree are not vendored. Point `$BENCHMARK_ROOT` at a full
-checkout that has them; the default is the in-repo `bmk_everything/`. Consumers read
-`$BENCHMARK_ROOT/format/<bench_id>/BENCHMARK.md` and the datasets under
-`$BENCHMARK_ROOT/data/datasets/`. When a benchmark has no `format/<id>/BENCHMARK.md`, the
-seed writes a stub instead of failing.
-
-The suite's own tests live in `bmk_everything/framework/tests/` and skip themselves when
-`format/` is absent.
+This is a candidate package: passing unit tests and dry runs does not establish
+full paper reproducibility. MedXpertQA uses the original MM-data text-only variant, documented explicitly;
+specialized judge/code-execution environments still require end-to-end verification.
 
 ### The slime training environment
 
@@ -212,4 +212,18 @@ only. Neither is modified relative to upstream except for the local scripts note
 
 ```bash
 uv run python -m pytest -q      # framework + tools test suites
+```
+
+## Citation
+
+```bibtex
+@misc{du2026rsimaster,
+  title={RSI-Master: Structuring Experiments to Guide Autonomous Model Improvement},
+  author={Yaxin Du and Xiyuan Yang and Zhifan Zhou and Yujie Ge and Cheng Wang and Jiajun Wang and Sijie Chen and Zehui Liu and Yuxin Zhang and Weicheng Gu and Julian Zhang and Zixing Lei and Siheng Chen},
+  year={2026},
+  eprint={2609.35561},
+  archivePrefix={arXiv},
+  primaryClass={cs.AI},
+  url={https://arxiv.org/abs/2609.35561}
+}
 ```

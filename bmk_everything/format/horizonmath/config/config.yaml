@@ -1,0 +1,20 @@
+general:
+  openai_api_base: <OPENAI_API_BASE>
+  openai_api_token: <OPENAI_API_TOKEN>
+  model: <MODEL_NAME>
+  split: <SPLIT_NAME>
+  output_dir: data/output/<BENCHMARK_ID>/<TRIAL_NAME>
+custom:
+  horizonmath_root: external/HorizonMath
+  official_commit: a34c47278697fda59d566ba11b2087da1bcf4454
+  max_tokens: 131072
+  enable_thinking: true
+  temperature: 0.0
+  max_workers: 4
+  timeout: 1800
+  empty_retries: 1
+  compliance_provider: openai
+  compliance_model: deepseek-v4-flash
+  compliance_api_base: https://your-judge.example.com/v1
+  compliance_api_token_env: OPENAI_API_KEY
+  compliance_reasoning_effort: high

@@ -1,0 +1,37 @@
+{
+  "_candidate": "medxpertqa",
+  "_candidate_notes": "English; MIT; includes a multimodal MM split (Text split is text-only). Rows carry medical_task + body_system tags, so specialty subsets can be extracted.",
+  "_domain_first_level": "biomedical",
+  "_quality_signal": "HF likes 61 / downloads 6.6k; arXiv 2501.18362; MIT license",
+  "_subcategory": "clinical-diagnostics",
+  "_why_recognized": "Comprehensive expert-level suite used as a leading baseline for 2025 medical LLM evaluation; GPT-4-class models score well below expert clinicians, giving real headroom.",
+  "_year": 2025,
+  "adapter": "hf_multiple_choice",
+  "benchmark-id": "medxpertqa",
+  "benchmark-name": "MedXpertQA",
+  "dataset": {
+    "path": "data/datasets/medxpertqa",
+    "split": "test",
+    "local_rows": 2000,
+    "hf": {
+      "path": "TsinghuaC3I/MedXpertQA",
+      "name": "MM",
+      "revision": "7e7c465a68eb2b866926bfa59c8c9d17a8daba65",
+      "split": "test"
+    }
+  },
+  "domain": "domain_knowledge",
+  "fields": {
+    "choices": "options",
+    "prompt": "question",
+    "target": "label"
+  },
+  "license": {
+    "evidence": "https://huggingface.co/api/datasets/TsinghuaC3I/MedXpertQA",
+    "spdx": "mit"
+  },
+  "resource-class": "light",
+  "scorer": "multiple_choice",
+  "selection": "domain-knowledge-survey-2026-verified",
+  "source": "https://huggingface.co/datasets/TsinghuaC3I/MedXpertQA"
+}

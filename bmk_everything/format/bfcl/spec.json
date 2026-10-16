@@ -1,0 +1,33 @@
+{
+  "benchmark-id": "bfcl",
+  "benchmark-name": "BFCL v3 Full",
+  "domain": "tool-use",
+  "adapter": "legacy_runner",
+  "scorer": "unscored",
+  "required-metric": "accuracy",
+  "fields": {
+    "prompt": "question",
+    "tools": "function",
+    "target": "ground_truth"
+  },
+  "dataset": {
+    "path": "data/datasets/bfcl",
+    "split": "default",
+    "local_rows": 5251,
+    "sha256": "0943d4b5ac828672eb268143a762d1a17216e925e357b50269c3ba2d17be5358",
+    "hf": {
+      "path": "gorilla-llm/Berkeley-Function-Calling-Leaderboard",
+      "name": "combined",
+      "revision": "main",
+      "split": "default"
+    }
+  },
+  "license": {
+    "spdx": "apache-2.0",
+    "evidence": "https://huggingface.co/datasets/gorilla-llm/Berkeley-Function-Calling-Leaderboard"
+  },
+  "resource-class": "medium",
+  "validation": {
+    "required-row-fields": ["id", "category", "question", "score_kind", "scoreable"]
+  }
+}

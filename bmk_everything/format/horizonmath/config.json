@@ -1,0 +1,12 @@
+{
+  "benchmark-id": "horizonmath",
+  "benchmark-name": "HorizonMath",
+  "domain": "mathematical_discovery",
+  "adapter": "legacy_runner",
+  "eval-method": "official_validator",
+  "integration-status": "runnable",
+  "source": "https://github.com/ewang26/HorizonMath",
+  "split": ["default", "calibration", "numeric", "benchmark", "construction"],
+  "license": {"spdx": "mit", "evidence": "https://github.com/ewang26/HorizonMath"},
+  "resource-class": "heavy"
+}

@@ -1,0 +1,14 @@
+{
+  "benchmark-id": "cmphysbench",
+  "adapter": "legacy_runner",
+  "scorer": "official_SEED_pass_at_1",
+  "official-commit": "b2cd8571279450f0861759f47d98e9fc577aa993",
+  "dataset": {
+    "path": "data/datasets/cmphysbench/CMPhysBench.json",
+    "rows": 520,
+    "revision": "43d185851f731e23aa5737c3667b3a9e87bf8cd1",
+    "sha256": "84104d21c93769d8f7af152874d31439ce2c7ce427349edcd8c811970d7ed526"
+  },
+  "primary-metric": "SEED/100",
+  "secondary-metric": "exact_accuracy"
+}

@@ -1,0 +1,30 @@
+{
+  "adapter": "hf_multiple_choice",
+  "benchmark-id": "pre-flight",
+  "benchmark-name": "Pre-Flight",
+  "dataset": {
+    "path": "data/datasets/pre-flight",
+    "split": "test",
+    "local_rows": 300,
+    "hf": {
+      "path": "AirsideLabs/pre-flight-06",
+      "name": "default",
+      "revision": "fdb1e431033db1b9fc7a2e87bdb62478eb0738e1",
+      "split": "test"
+    }
+  },
+  "domain": "domain_knowledge",
+  "fields": {
+    "choices": "choices",
+    "prompt": "input",
+    "target": "target"
+  },
+  "license": {
+    "evidence": "https://huggingface.co/api/datasets/AirsideLabs/pre-flight-06",
+    "spdx": "mit"
+  },
+  "resource-class": "light",
+  "scorer": "multiple_choice",
+  "selection": "curated-primary-metadata-and-schema-verified",
+  "source": "https://huggingface.co/datasets/AirsideLabs/pre-flight-06"
+}

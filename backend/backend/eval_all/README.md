@@ -92,3 +92,7 @@ benchmark suite 对任何 incomplete 样本都会**退出非 0** 且把 `reward`
   `evaluation.eval_all.bench_id` 有值时,`pipeline_llama_factory_gsm8k.py` 自动把
   stage-3 派发到 `eval_all.py`。
 - **手动**:`bash eval.sh <bench_id> --limit 100`。
+
+## Setup and portable paths
+
+See [BmkEverything setup](../../../bmk_everything/SETUP.md). The candidate release includes 24 selected paper benchmark definitions; datasets and external evaluator environments are prepared separately. Set `BENCHMARK_ROOT` to a complete tree on the execution host, or pass `--bmk-root`; keep ExpOS `eval_all.bmk_root` consistent. A healthy GPU backend does not verify benchmark assets.

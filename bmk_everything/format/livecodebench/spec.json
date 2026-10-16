@@ -1,0 +1,21 @@
+{
+  "benchmark-id": "livecodebench",
+  "benchmark-name": "LiveCodeBench Code Generation Lite v6",
+  "domain": "code_generation",
+  "adapter": "legacy_runner",
+  "scorer": "official_execution_pass_at_1",
+  "fields": {"prompt": "question_content", "target": "private_test_cases"},
+  "dataset": {
+    "path": "data/datasets/livecodebench/release_v6.jsonl",
+    "split": "test",
+    "local_rows": 1055,
+    "hf": {
+      "path": "livecodebench/code_generation_lite",
+      "version_tag": "release_v6",
+      "revision": "0fe84c3912ea0c4d4a78037083943e8f0c4dd505",
+      "fingerprint": "3bf27f1e2df313d6"
+    }
+  },
+  "resource-class": "heavy",
+  "license": {"spdx": "unknown", "evidence": "Upstream repository and dataset metadata"}
+}

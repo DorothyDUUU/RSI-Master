@@ -17,7 +17,8 @@ import yaml
 # repo root (framework's parent), e.g.:
 #   framework/.venv/bin/python framework/run_eval.py <benchmark-id> --limit 500
 FRAMEWORK_DIR = Path(__file__).resolve().parent
-FORMAT_DIR = FRAMEWORK_DIR.parent / "format"
+BENCHMARK_ROOT = Path(os.environ.get("BENCHMARK_ROOT") or FRAMEWORK_DIR.parent).expanduser().resolve()
+FORMAT_DIR = BENCHMARK_ROOT / "format"
 sys.path.insert(0, str(FRAMEWORK_DIR))
 
 from core.adapters import get_adapter
@@ -92,6 +93,12 @@ def parser() -> argparse.ArgumentParser:
 
 def main() -> None:
     args = parser().parse_args()
+    if not FORMAT_DIR.is_dir():
+        raise SystemExit(
+            f"error: benchmark definitions missing: {FORMAT_DIR}. "
+            "This release includes framework only; supply a complete benchmark tree "
+            "via BENCHMARK_ROOT. See bmk_everything/SETUP.md."
+        )
     if args.list:
         list_benchmarks(args.status, args.domain, args.eval_method)
         return
@@ -160,7 +167,7 @@ def main() -> None:
         print(json.dumps(dry_run, ensure_ascii=False, indent=2))
         runner = bench_dir / "run_benchmark.py"
         if runner.exists() and (bench_dir / "spec.json").exists():
-            python = FRAMEWORK_DIR / ".venv/bin/python"
+            python = BENCHMARK_ROOT / "framework/.venv/bin/python"
             if not python.exists():
                 python = Path(sys.executable)
             command = [str(python), str(runner), "--config", str(config_path), "--dry-run"]
@@ -179,7 +186,7 @@ def main() -> None:
 
     python = bench_dir / ".venv/bin/python"
     if not python.exists():
-        python = FRAMEWORK_DIR / ".venv/bin/python"
+        python = BENCHMARK_ROOT / "framework/.venv/bin/python"
     runner = bench_dir / "run_benchmark.py"
     if not python.exists() or not runner.exists():
         raise SystemExit(f"error: runnable benchmark is missing {python if not python.exists() else runner}")
@@ -193,6 +200,7 @@ def main() -> None:
     if args.limit is not None:
         command.extend(["--limit", str(args.limit)])
     child_env = dict(os.environ)
+    child_env["BENCHMARK_ROOT"] = str(BENCHMARK_ROOT)
     if args.sample_indices:
         try:
             sample_indices = [int(item) for item in args.sample_indices.split(",")]

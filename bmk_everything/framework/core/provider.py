@@ -224,16 +224,22 @@ def chat_detailed(
     temperature: float = 1.0,
     timeout: int = 180,
     retries: int | None = None,
+    endpoint: Endpoint | None = None,
 ) -> ChatResult:
+    """An explicit OpenAI endpoint uses the supplied model, without env routing.
+
+    Existing callers keep environment-based routing, including provider fallback.
+    """
     if retries is None:
         retries = int(os.environ.get("KIMI_PROVIDER_RETRIES", "2"))
-    model = os.environ.get("MODEL_NAME") or model
-    if model.startswith("claude-") and _resolve_anthropic_endpoint():
+    if endpoint is None:
+        model = os.environ.get("MODEL_NAME") or model
+    if endpoint is None and model.startswith("claude-") and _resolve_anthropic_endpoint():
         return _anthropic_chat_detailed(
             messages, model=model, max_tokens=max_tokens, temperature=temperature,
             timeout=timeout, retries=retries,
         )
-    primary, fallback = _resolve_primary_and_fallback()
+    primary, fallback = (endpoint, None) if endpoint is not None else _resolve_primary_and_fallback()
     request_messages = list(messages)
     if os.environ.get("KIMI_FINAL_ONLY") == "1":
         request_messages.insert(0, {

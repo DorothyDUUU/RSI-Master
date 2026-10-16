@@ -1,0 +1,38 @@
+{
+  "_candidate": "econlogicqa",
+  "_candidate_notes": "License cc-by-nc-sa-4.0, English, n<1K (train/test/val CSV); MCQ with 4 options.",
+  "_domain_first_level": "economics-finance",
+  "_quality_signal": "arXiv 2405.07938 / cc-by-nc-sa-4.0",
+  "_subcategory": "microeconomics",
+  "_why_recognized": "Peer-reviewed arXiv benchmark targeting an under-tested economic reasoning skill (event sequencing); cited in econ-LLM evaluations.",
+  "_year": 2024,
+  "adapter": "hf_exact_match",
+  "benchmark-id": "econlogicqa",
+  "benchmark-name": "EconLogicQA",
+  "dataset": {
+    "path": "data/datasets/econlogicqa",
+    "split": "test",
+    "local_rows": 130,
+    "hf": {
+      "path": "yinzhu-quan/econ_logic_qa",
+      "name": "default",
+      "revision": "28de9728244fd33913a64188d526187ac8e3bdae",
+      "split": "test"
+    }
+  },
+  "domain": "domain_knowledge",
+  "fields": {
+    "prompt": "Question",
+    "target": "Answer",
+    "choice_fields": ["A", "B", "C", "D"]
+  },
+  "prompt-transform": "event_sequence",
+  "license": {
+    "evidence": "https://huggingface.co/api/datasets/yinzhu-quan/econ_logic_qa",
+    "spdx": "cc-by-nc-sa-4.0"
+  },
+  "resource-class": "light",
+  "scorer": "exact_match",
+  "selection": "domain-knowledge-survey-2026-verified",
+  "source": "https://huggingface.co/datasets/yinzhu-quan/econ_logic_qa"
+}

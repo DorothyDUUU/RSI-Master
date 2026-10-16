@@ -1,0 +1,23 @@
+general:
+  openai_api_base: <OPENAI_API_BASE>
+  openai_api_token: <OPENAI_API_TOKEN>
+  model: <MODEL_NAME>
+  split: <SPLIT_NAME>
+  output_dir: data/output/<BENCHMARK_ID>/<TRIAL_NAME>
+custom:
+  official_root: ../../external/SciCode-Verified
+  official_commit: ddab4a92f8d80a7113ab946628e994b52354d838
+  official_python: ../../external/SciCode-Verified/.venv/bin/python
+  max_tokens: 32768
+  native_context_tokens: 262144
+  thinking: true
+  max_workers: 8
+  temperature: 0.6
+  top_p: 0.95
+  top_k: 20
+  min_p: 0.0
+  grading_envs:
+    - 2024:../../external/scicode-envs/2024/bin/python
+    - 2025:../../external/scicode-envs/2025/bin/python
+  full_envs: true
+  timeout: 1800

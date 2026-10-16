@@ -1,0 +1,10 @@
+{
+    "benchmark-id": "gsm8k",
+    "benchmark-name": "GSM8K",
+    "source": "https://huggingface.co/datasets/openai/gsm8k",
+    "split": [
+        "default",
+        "sample_100"
+    ],
+    "judge_quality_score": 95
+}

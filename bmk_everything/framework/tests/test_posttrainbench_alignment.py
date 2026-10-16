@@ -91,7 +91,7 @@ def test_all_posttrainbench_benchmarks_are_runnable_and_pinned():
     for benchmark_id in (
         "arenahardwriting",
         "bfcl",
-        "healthbench",
+        "healthbench_easy",
         "humaneval",
     ):
         directory = ROOT / "format" / benchmark_id

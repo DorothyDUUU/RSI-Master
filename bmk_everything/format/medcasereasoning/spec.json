@@ -1,0 +1,8 @@
+{
+  "benchmark-id": "medcasereasoning", "benchmark-name": "MedCaseReasoning (DataPrep-Bench protocol)", "adapter": "dataprep_eval",
+  "dataset": {"path": "data/datasets/medcasereasoning", "split": "test", "revision": "771688905d8c5c7e76acb83d6be615bb1027e066"},
+  "source-key": "medcasereasoning", "expected-rows": 897,
+  "official-evaluation-revision": "336f354684c1d5541e33e7f7a2738f28226640f1",
+  "metric": "diagnostic_accuracy", "auxiliary-metric": "reasoning_recall", "resource-class": "light",
+  "license": {"spdx": "apache-2.0", "evidence": "https://github.com/OpenDCAI/Data-Preparation-Bench/blob/336f354684c1d5541e33e7f7a2738f28226640f1/LICENSE"}
+}

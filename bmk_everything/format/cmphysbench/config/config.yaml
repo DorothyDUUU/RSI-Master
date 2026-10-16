@@ -1,0 +1,24 @@
+general:
+  openai_api_base: <OPENAI_API_BASE>
+  openai_api_token: <OPENAI_API_TOKEN>
+  model: <MODEL_NAME>
+  split: <SPLIT_NAME>
+  output_dir: data/output/<BENCHMARK_ID>/<TRIAL_NAME>
+custom:
+  official_root: ../../external/CMPhysBench
+  official_commit: b2cd8571279450f0861759f47d98e9fc577aa993
+  dataset_path: ../../data/datasets/cmphysbench/CMPhysBench.json
+  dataset_revision: 43d185851f731e23aa5737c3667b3a9e87bf8cd1
+  dataset_sha256: 84104d21c93769d8f7af152874d31439ce2c7ce427349edcd8c811970d7ed526
+  scorer_python: ../../external/CMPhysBench/.venv/bin/python
+  max_tokens: 16384
+  native_context_tokens: 40960
+  max_workers: 16
+  score_workers: 16
+  request_timeout: 1800
+  request_retries: 3
+  temperature: 0.6
+  top_p: 0.95
+  top_k: 20
+  min_p: 0.0
+  enable_thinking: true

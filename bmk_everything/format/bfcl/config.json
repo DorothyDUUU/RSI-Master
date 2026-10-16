@@ -1,0 +1,11 @@
+{
+  "benchmark-id": "bfcl",
+  "benchmark-name": "BFCL v3 Full",
+  "domain": "tool-use",
+  "adapter": "legacy_runner",
+  "eval-method": "bfcl_call_sequence_match",
+  "integration-status": "runnable",
+  "source": "https://huggingface.co/datasets/gorilla-llm/Berkeley-Function-Calling-Leaderboard",
+  "split": ["default"],
+  "judge_quality_score": 100
+}

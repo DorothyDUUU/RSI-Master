@@ -1,0 +1,10 @@
+{
+  "benchmark-id": "ckqa", "benchmark-name": "CPA-KQA (CKQA table alias)",
+  "domain": "finance", "adapter": "legacy_runner", "eval-method": "multiple_choice_accuracy",
+  "integration-status": "runnable",
+  "source": "https://github.com/OpenDCAI/Data-Preparation-Bench/tree/336f354684c1d5541e33e7f7a2738f28226640f1/Data-Agent-Evaluation",
+  "source-revision": "336f354684c1d5541e33e7f7a2738f28226640f1", "split": ["all"],
+  "aliases": ["CKQA", "CPA-KQA", "FinCDM-CPA-KQA"],
+  "license": {"spdx": "apache-2.0", "evidence": "https://github.com/OpenDCAI/Data-Preparation-Bench/blob/336f354684c1d5541e33e7f7a2738f28226640f1/LICENSE"},
+  "resource-class": "light", "scoring-status": "supported"
+}

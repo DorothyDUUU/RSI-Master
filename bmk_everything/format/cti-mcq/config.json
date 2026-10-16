@@ -1,0 +1,17 @@
+{
+  "benchmark-id": "cti-mcq",
+  "benchmark-name": "CTI-MCQ: Cyber Threat Intelligence Multiple-Choice Benchmark (part of CTIBench)",
+  "domain": "domain_knowledge",
+  "adapter": "hf_multiple_choice",
+  "eval-method": "multiple_choice",
+  "integration-status": "runnable",
+  "source": "https://huggingface.co/datasets/AI4Sec/cti-bench",
+  "split": [
+    "default"
+  ],
+  "license": {
+    "evidence": "https://huggingface.co/api/datasets/AI4Sec/cti-bench",
+    "spdx": "cc-by-nc-sa-4.0"
+  },
+  "resource-class": "light"
+}

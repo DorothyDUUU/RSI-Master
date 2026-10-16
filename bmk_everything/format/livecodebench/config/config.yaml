@@ -1,0 +1,25 @@
+general:
+  anthropic_api_base: <ANTHROPIC_API_BASE>
+  anthropic_api_token: <ANTHROPIC_API_TOKEN>
+  openai_api_base: <OPENAI_API_BASE>
+  openai_api_token: <OPENAI_API_TOKEN>
+  model: <MODEL_NAME>
+  split: <SPLIT_NAME>
+  output_dir: data/output/<BENCHMARK_ID>/<TRIAL_NAME>
+
+custom:
+  official_root: ../../external/LiveCodeBench
+  dataset_path: ../../data/datasets/livecodebench/release_v6.jsonl
+  official_commit: 28fef95ea8c9f7a547c8329f2cd3d32b92c1fa24
+  dataset_release: release_v6
+  dataset_revision: 0fe84c3912ea0c4d4a78037083943e8f0c4dd505
+  dataset_fingerprint: 3bf27f1e2df313d6
+  max_tokens: 16384
+  max_workers: 16
+  request_timeout: 1800
+  execution_workers: 16
+  execution_timeout: 6
+  sandbox_fusion_url: http://10.0.0.37:18080
+  temperature: 0.0
+  enable_thinking: true
+  samples_per_problem: 1

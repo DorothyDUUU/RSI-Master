@@ -1,0 +1,45 @@
+{
+  "_candidate": "cti-mcq",
+  "_candidate_notes": "cc-by-nc-sa-4.0; English; file cti-mcq.tsv with Question, Options A-D, GT; part of a larger CTI benchmark (also contains retrieval and relation-classification tasks).",
+  "_domain_first_level": "computer-science-knowledge",
+  "_quality_signal": "arXiv 2406.07599 (NeurIPS 2024 D&B); HF 1874 downloads, 20 likes (cc-by-nc-sa-4.0)",
+  "_subcategory": "computer-security",
+  "_why_recognized": "Peer-reviewed at NeurIPS 2024 Datasets & Benchmarks; focused CTI-knowledge MCQ benchmark used in threat-intelligence LLM evaluations; each item has ground-truth answer.",
+  "_year": 2024,
+  "adapter": "hf_multiple_choice",
+  "benchmark-id": "cti-mcq",
+  "benchmark-name": "CTI-MCQ: Cyber Threat Intelligence Multiple-Choice Benchmark (part of CTIBench)",
+  "dataset": {
+    "path": "data/datasets/cti-mcq",
+    "split": "test",
+    "local_rows": 2500,
+    "hf": {
+      "path": "AI4Sec/cti-bench",
+      "name": "cti-mcq",
+      "revision": "9237e1636ee3e168fbe5ebdcc1c571de0525e568",
+      "split": "test"
+    }
+  },
+  "domain": "domain_knowledge",
+  "exclude-indices": [
+    2235
+  ],
+  "fields": {
+    "prompt": "Question",
+    "choice_fields": [
+      "Option A",
+      "Option B",
+      "Option C",
+      "Option D"
+    ],
+    "target": "GT"
+  },
+  "license": {
+    "evidence": "https://huggingface.co/api/datasets/AI4Sec/cti-bench",
+    "spdx": "cc-by-nc-sa-4.0"
+  },
+  "resource-class": "light",
+  "scorer": "multiple_choice",
+  "selection": "domain-knowledge-survey-2026-verified",
+  "source": "https://huggingface.co/datasets/AI4Sec/cti-bench"
+}

@@ -1,0 +1,12 @@
+{
+  "benchmark-id": "cmphysbench",
+  "benchmark-name": "CMPhysBench",
+  "domain": "condensed_matter_physics",
+  "adapter": "legacy_runner",
+  "eval-method": "official_seed",
+  "integration-status": "runnable",
+  "source": "https://github.com/CMPhysBench/CMPhysBench",
+  "split": ["default"],
+  "license": {"spdx": "Apache-2.0", "evidence": "https://github.com/CMPhysBench/CMPhysBench/blob/main/LICENSE"},
+  "resource-class": "heavy"
+}

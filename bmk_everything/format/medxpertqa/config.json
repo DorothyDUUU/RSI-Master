@@ -1,0 +1,17 @@
+{
+  "benchmark-id": "medxpertqa",
+  "benchmark-name": "MedXpertQA",
+  "domain": "domain_knowledge",
+  "adapter": "hf_multiple_choice",
+  "eval-method": "multiple_choice",
+  "integration-status": "runnable",
+  "source": "https://huggingface.co/datasets/TsinghuaC3I/MedXpertQA",
+  "split": [
+    "default"
+  ],
+  "license": {
+    "evidence": "https://huggingface.co/api/datasets/TsinghuaC3I/MedXpertQA",
+    "spdx": "mit"
+  },
+  "resource-class": "light"
+}

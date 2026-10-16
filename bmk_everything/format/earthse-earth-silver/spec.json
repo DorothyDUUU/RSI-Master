@@ -1,0 +1,37 @@
+{
+  "_candidate": "earthse-earth-silver",
+  "_candidate_notes": "MIT; English; 1,000 QA; same schema as Earth-Iron; intentionally harder selection (do not double-count with Earth-Iron).",
+  "_domain_first_level": "earth-environment",
+  "_quality_signal": "ICLR 2026; arXiv 2505.17139; MIT license",
+  "_subcategory": "earth-science-exam",
+  "_why_recognized": "Harder companion benchmark in the ICLR 2026 EarthSE paper, explicitly selected to leave headroom for frontier LLMs.",
+  "_year": 2025,
+  "adapter": "hf_multiple_choice",
+  "benchmark-id": "earthse-earth-silver",
+  "benchmark-name": "EarthSE Earth-Silver (Harder Earth Science Benchmark)",
+  "dataset": {
+    "path": "data/datasets/earthse-earth-silver",
+    "split": "multiple_choice",
+    "local_rows": 250,
+    "hf": {
+      "path": "ai-earth/Earth-Silver",
+      "name": "default",
+      "revision": "bb2f9cc31911a9d95cca9cedf075fa17ba549b08",
+      "split": "multiple_choice"
+    }
+  },
+  "domain": "domain_knowledge",
+  "fields": {
+    "prompt": "question",
+    "target": "answer"
+  },
+  "license": {
+    "evidence": "https://huggingface.co/api/datasets/ai-earth/Earth-Silver",
+    "spdx": "mit"
+  },
+  "resource-class": "light",
+  "scorer": "multiple_choice",
+  "selection": "domain-knowledge-survey-2026-verified",
+  "source": "https://huggingface.co/datasets/ai-earth/Earth-Silver",
+  "mcq-inline": true
+}

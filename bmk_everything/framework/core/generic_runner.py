@@ -21,7 +21,7 @@ from .scoring import (boolean_match, exact_match, json_match, label_match,
 
 
 # BmkEverything/data/datasets/<id>/<split>.jsonl — root of the local data tree.
-REPO_ROOT = Path(__file__).resolve().parents[2]
+REPO_ROOT = Path(os.environ.get("BENCHMARK_ROOT") or Path(__file__).resolve().parents[2]).expanduser().resolve()
 
 
 SCORERS = {

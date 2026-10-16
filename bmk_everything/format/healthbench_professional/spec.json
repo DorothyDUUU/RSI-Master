@@ -1,0 +1,48 @@
+{
+  "benchmark-id": "healthbench_professional",
+  "benchmark-name": "HealthBench Professional",
+  "domain": "healthcare",
+  "adapter": "legacy_runner",
+  "scorer": "unscored",
+  "required-metric": "rubric_score",
+  "fields": {
+    "prompt": "conversation.messages",
+    "target": "rubric_items"
+  },
+  "dataset": {
+    "path": "data/datasets/healthbench_professional",
+    "split": "test",
+    "local_rows": 525,
+    "sha256": "97357c11c770002a9ca0c8f5e719feec9982ed776c8a8344ec1ce01d139f6ba0",
+    "source": "https://huggingface.co/datasets/openai/healthbench-professional",
+    "hf": {
+      "path": "openai/healthbench-professional",
+      "name": "default",
+      "revision": "349962fd46dd02343a0d8a606491baf59154ea1a",
+      "split": "test"
+    }
+  },
+  "license": {
+    "spdx": "mit",
+    "evidence": "https://huggingface.co/datasets/openai/healthbench-professional"
+  },
+  "resource-class": "light",
+  "validation": {
+    "rubrics-field": "rubric_items",
+    "required-row-fields": [
+      "id",
+      "conversation",
+      "rubric_items",
+      "use_case",
+      "type",
+      "difficulty",
+      "specialty",
+      "physician_response",
+      "canary_string"
+    ],
+    "required-rubric-fields": [
+      "criterion_text",
+      "points"
+    ]
+  }
+}

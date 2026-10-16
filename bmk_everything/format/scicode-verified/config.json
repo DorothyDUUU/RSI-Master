@@ -1,0 +1,12 @@
+{
+  "benchmark-id": "scicode-verified",
+  "benchmark-name": "SciCode-Verified v2",
+  "domain": "scientific_code_generation",
+  "adapter": "legacy_runner",
+  "eval-method": "official_execution",
+  "integration-status": "runnable",
+  "source": "https://github.com/flyingwagner/scicode-verified",
+  "split": ["with_background", "without_background"],
+  "license": {"spdx": "Apache-2.0", "evidence": "https://github.com/flyingwagner/scicode-verified"},
+  "resource-class": "heavy"
+}

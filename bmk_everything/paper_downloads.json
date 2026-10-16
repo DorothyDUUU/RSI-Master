@@ -1,0 +1,270 @@
+[
+  {
+    "benchmark_id": "aime2025",
+    "upstream_source": "https://huggingface.co/datasets/AI-MO/aimo-validation-aime",
+    "setup_guide": "format/aime2025/BENCHMARK.md",
+    "download_status": "manual specialized setup required"
+  },
+  {
+    "benchmark_id": "arenahardwriting",
+    "upstream_source": "https://github.com/lm-sys/arena-hard-auto",
+    "setup_guide": "format/arenahardwriting/BENCHMARK.md",
+    "download_status": "manual specialized setup required"
+  },
+  {
+    "benchmark_id": "bfcl",
+    "upstream_source": "https://huggingface.co/datasets/gorilla-llm/Berkeley-Function-Calling-Leaderboard",
+    "setup_guide": "format/bfcl/BENCHMARK.md",
+    "download_status": "manual specialized setup required",
+    "huggingface": {
+      "path": "gorilla-llm/Berkeley-Function-Calling-Leaderboard",
+      "name": "combined",
+      "revision": "main",
+      "split": "default"
+    },
+    "local_path": "data/datasets/bfcl",
+    "expected_rows": 5251
+  },
+  {
+    "benchmark_id": "gpqa",
+    "upstream_source": "https://huggingface.co/datasets/Idavidrein/gpqa",
+    "setup_guide": "format/gpqa/BENCHMARK.md",
+    "download_status": "manual specialized setup required"
+  },
+  {
+    "benchmark_id": "gsm8k",
+    "upstream_source": "https://huggingface.co/datasets/openai/gsm8k",
+    "setup_guide": "format/gsm8k/BENCHMARK.md",
+    "download_status": "manual specialized setup required"
+  },
+  {
+    "benchmark_id": "healthbench_easy",
+    "upstream_source": "https://openaipublic.blob.core.windows.net/simple-evals/healthbench/2025-05-07-06-14-12_oss_eval.jsonl",
+    "setup_guide": "format/healthbench_easy/BENCHMARK.md",
+    "download_status": "manual specialized setup required",
+    "huggingface": {
+      "path": "openai/healthbench",
+      "revision": "40ee1968852fc57f625934251ac22be47077a8fb",
+      "split": "train"
+    },
+    "local_path": "data/datasets/healthbench_easy",
+    "expected_rows": 245
+  },
+  {
+    "benchmark_id": "humaneval",
+    "upstream_source": "https://huggingface.co/datasets/openai/openai_humaneval",
+    "setup_guide": "format/humaneval/BENCHMARK.md",
+    "download_status": "manual specialized setup required"
+  },
+  {
+    "benchmark_id": "lexam",
+    "upstream_source": "https://huggingface.co/datasets/LEXam-Benchmark/LEXam",
+    "setup_guide": "format/lexam/BENCHMARK.md",
+    "download_status": "manual specialized setup required",
+    "huggingface": {
+      "path": "LEXam-Benchmark/LEXam",
+      "name": "mcq_16_choices",
+      "revision": "31e57ae395f92ed7284a4c28d278c55da892b898",
+      "split": "test"
+    },
+    "local_path": "data/datasets/lexam",
+    "expected_rows": 1028
+  },
+  {
+    "benchmark_id": "legalbench",
+    "upstream_source": "https://github.com/OpenDCAI/Data-Preparation-Bench/tree/336f354684c1d5541e33e7f7a2738f28226640f1/Data-Agent-Evaluation",
+    "setup_guide": "format/legalbench/BENCHMARK.md",
+    "download_status": "fresh full download and SHA256 verified",
+    "pinned_source": {
+      "repository": "https://github.com/OpenDCAI/Data-Preparation-Bench.git",
+      "revision": "336f354684c1d5541e33e7f7a2738f28226640f1",
+      "dataset": "https://huggingface.co/datasets/lhpku20010120/Data-Prep-Bench",
+      "dataset-revision": "771688905d8c5c7e76acb83d6be615bb1027e066",
+      "upstream-file": "eval/law.jsonl",
+      "upstream-sha256": "b5e8475d34f106605897293d40ff957524141dc0f37ab1a5c9a20279fddaf25e"
+    },
+    "command": "python framework/automation/bootstrap_dataprep_eval.py --benchmark legalbench"
+  },
+  {
+    "benchmark_id": "medcasereasoning",
+    "upstream_source": "https://github.com/OpenDCAI/Data-Preparation-Bench/tree/336f354684c1d5541e33e7f7a2738f28226640f1/Data-Agent-Evaluation",
+    "setup_guide": "format/medcasereasoning/BENCHMARK.md",
+    "download_status": "fresh full download and SHA256 verified",
+    "pinned_source": {
+      "repository": "https://github.com/OpenDCAI/Data-Preparation-Bench.git",
+      "revision": "336f354684c1d5541e33e7f7a2738f28226640f1",
+      "dataset": "https://huggingface.co/datasets/lhpku20010120/Data-Prep-Bench",
+      "dataset-revision": "771688905d8c5c7e76acb83d6be615bb1027e066",
+      "upstream-file": "eval/medicine.jsonl",
+      "upstream-sha256": "e85cc244d25ee344185ca1c5df55be3bf2a0c32807888ad7e7312d33c92a4731"
+    },
+    "command": "python framework/automation/bootstrap_dataprep_eval.py --benchmark medcasereasoning"
+  },
+  {
+    "benchmark_id": "medxpertqa",
+    "upstream_source": "https://huggingface.co/datasets/TsinghuaC3I/MedXpertQA",
+    "setup_guide": "format/medxpertqa/BENCHMARK.md",
+    "download_status": "manual specialized setup required",
+    "huggingface": {
+      "path": "TsinghuaC3I/MedXpertQA",
+      "name": "MM",
+      "revision": "7e7c465a68eb2b866926bfa59c8c9d17a8daba65",
+      "split": "test"
+    },
+    "local_path": "data/datasets/medxpertqa",
+    "expected_rows": 2000,
+    "protocol_note": "Original integration explicitly evaluates MM-config text questions and choices only; images are not provided. Not the full official multimodal protocol."
+  },
+  {
+    "benchmark_id": "wmdp-bio",
+    "upstream_source": "https://huggingface.co/datasets/cais/wmdp",
+    "setup_guide": "format/wmdp-bio/BENCHMARK.md",
+    "download_status": "manual specialized setup required",
+    "huggingface": {
+      "path": "cais/wmdp",
+      "name": "wmdp-bio",
+      "revision": "7125571f22f032c56415e7980f48d877dd830ff8",
+      "split": "test"
+    },
+    "local_path": "data/datasets/wmdp-bio",
+    "expected_rows": 1273
+  },
+  {
+    "benchmark_id": "econlogicqa",
+    "upstream_source": "https://huggingface.co/datasets/yinzhu-quan/econ_logic_qa",
+    "setup_guide": "format/econlogicqa/BENCHMARK.md",
+    "download_status": "manual specialized setup required",
+    "huggingface": {
+      "path": "yinzhu-quan/econ_logic_qa",
+      "name": "default",
+      "revision": "28de9728244fd33913a64188d526187ac8e3bdae",
+      "split": "test"
+    },
+    "local_path": "data/datasets/econlogicqa",
+    "expected_rows": 130
+  },
+  {
+    "benchmark_id": "earthse-earth-silver",
+    "upstream_source": "https://huggingface.co/datasets/ai-earth/Earth-Silver",
+    "setup_guide": "format/earthse-earth-silver/BENCHMARK.md",
+    "download_status": "manual specialized setup required",
+    "huggingface": {
+      "path": "ai-earth/Earth-Silver",
+      "name": "default",
+      "revision": "bb2f9cc31911a9d95cca9cedf075fa17ba549b08",
+      "split": "multiple_choice"
+    },
+    "local_path": "data/datasets/earthse-earth-silver",
+    "expected_rows": 250
+  },
+  {
+    "benchmark_id": "cti-mcq",
+    "upstream_source": "https://huggingface.co/datasets/AI4Sec/cti-bench",
+    "setup_guide": "format/cti-mcq/BENCHMARK.md",
+    "download_status": "manual specialized setup required",
+    "huggingface": {
+      "path": "AI4Sec/cti-bench",
+      "name": "cti-mcq",
+      "revision": "9237e1636ee3e168fbe5ebdcc1c571de0525e568",
+      "split": "test"
+    },
+    "local_path": "data/datasets/cti-mcq",
+    "expected_rows": 2500,
+    "protocol_review": "All 2499 included rows checked; four rows lack trailing option D, and their gold letter still maps to the same original option text."
+  },
+  {
+    "benchmark_id": "cmphysbench",
+    "upstream_source": "https://github.com/CMPhysBench/CMPhysBench",
+    "setup_guide": "format/cmphysbench/BENCHMARK.md",
+    "download_status": "manual specialized setup required"
+  },
+  {
+    "benchmark_id": "pre-flight",
+    "upstream_source": "https://huggingface.co/datasets/AirsideLabs/pre-flight-06",
+    "setup_guide": "format/pre-flight/BENCHMARK.md",
+    "download_status": "manual specialized setup required",
+    "huggingface": {
+      "path": "AirsideLabs/pre-flight-06",
+      "name": "default",
+      "revision": "fdb1e431033db1b9fc7a2e87bdb62478eb0738e1",
+      "split": "test"
+    },
+    "local_path": "data/datasets/pre-flight",
+    "expected_rows": 300
+  },
+  {
+    "benchmark_id": "ckqa",
+    "upstream_source": "https://github.com/OpenDCAI/Data-Preparation-Bench/tree/336f354684c1d5541e33e7f7a2738f28226640f1/Data-Agent-Evaluation",
+    "setup_guide": "format/ckqa/BENCHMARK.md",
+    "download_status": "fresh full download and SHA256 verified",
+    "pinned_source": {
+      "repository": "https://github.com/OpenDCAI/Data-Preparation-Bench.git",
+      "revision": "336f354684c1d5541e33e7f7a2738f28226640f1",
+      "dataset": "https://huggingface.co/datasets/lhpku20010120/Data-Prep-Bench",
+      "dataset-revision": "771688905d8c5c7e76acb83d6be615bb1027e066",
+      "upstream-file": "eval/business.jsonl",
+      "upstream-sha256": "7d1d7e24e3ce02cbd284f1b28bd06aa9a4cf07db5e578df65e15ea2e661e6d3e"
+    },
+    "command": "python framework/automation/bootstrap_dataprep_eval.py --benchmark ckqa"
+  },
+  {
+    "benchmark_id": "aime2026",
+    "upstream_source": "https://huggingface.co/datasets/MathArena/aime_2026",
+    "setup_guide": "format/aime2026/BENCHMARK.md",
+    "download_status": "manual specialized setup required"
+  },
+  {
+    "benchmark_id": "livecodebench",
+    "upstream_source": "https://github.com/LiveCodeBench/LiveCodeBench",
+    "setup_guide": "format/livecodebench/BENCHMARK.md",
+    "download_status": "manual specialized setup required",
+    "huggingface": {
+      "path": "livecodebench/code_generation_lite",
+      "version_tag": "release_v6",
+      "revision": "0fe84c3912ea0c4d4a78037083943e8f0c4dd505",
+      "fingerprint": "3bf27f1e2df313d6"
+    },
+    "local_path": "data/datasets/livecodebench/release_v6.jsonl",
+    "expected_rows": 1055
+  },
+  {
+    "benchmark_id": "horizonmath",
+    "upstream_source": "https://github.com/ewang26/HorizonMath",
+    "setup_guide": "format/horizonmath/BENCHMARK.md",
+    "download_status": "manual specialized setup required"
+  },
+  {
+    "benchmark_id": "scicode-verified",
+    "upstream_source": "https://github.com/flyingwagner/scicode-verified",
+    "setup_guide": "format/scicode-verified/BENCHMARK.md",
+    "download_status": "manual specialized setup required"
+  },
+  {
+    "benchmark_id": "healthbench_professional",
+    "upstream_source": "https://huggingface.co/datasets/openai/healthbench-professional",
+    "setup_guide": "format/healthbench_professional/BENCHMARK.md",
+    "download_status": "manual specialized setup required",
+    "huggingface": {
+      "path": "openai/healthbench-professional",
+      "name": "default",
+      "revision": "349962fd46dd02343a0d8a606491baf59154ea1a",
+      "split": "test"
+    },
+    "local_path": "data/datasets/healthbench_professional",
+    "expected_rows": 525
+  },
+  {
+    "benchmark_id": "hle",
+    "upstream_source": "https://huggingface.co/datasets/cais/hle",
+    "setup_guide": "format/hle/BENCHMARK.md",
+    "download_status": "manual specialized setup required",
+    "huggingface": {
+      "path": "bdytx5/hle",
+      "name": "default",
+      "revision": "main",
+      "split": "test"
+    },
+    "local_path": "data/datasets/hle",
+    "expected_rows": 2158
+  }
+]

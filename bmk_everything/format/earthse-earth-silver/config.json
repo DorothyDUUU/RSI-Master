@@ -1,0 +1,17 @@
+{
+  "benchmark-id": "earthse-earth-silver",
+  "benchmark-name": "EarthSE Earth-Silver (Harder Earth Science Benchmark)",
+  "domain": "domain_knowledge",
+  "adapter": "hf_multiple_choice",
+  "eval-method": "multiple_choice",
+  "integration-status": "runnable",
+  "source": "https://huggingface.co/datasets/ai-earth/Earth-Silver",
+  "split": [
+    "default"
+  ],
+  "license": {
+    "evidence": "https://huggingface.co/api/datasets/ai-earth/Earth-Silver",
+    "spdx": "mit"
+  },
+  "resource-class": "light"
+}

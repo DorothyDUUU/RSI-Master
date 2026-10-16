@@ -1,0 +1,18 @@
+# 固定不变的参数
+# <***> 这样子的不需要管 也不能自己添加 是运行时动态导入的
+general:
+  anthropic_api_base: <ANTHROPIC_API_BASE>
+  anthropic_api_token: <ANTHROPIC_API_TOKEN>
+  openai_api_base: <OPENAI_API_BASE>
+  openai_api_token: <OPENAI_API_TOKEN>
+  model: <MODEL_NAME>
+  split: <SPLIT_NAME>
+  output_dir: data/output/<BENCHMARK_ID>/<TRIAL_NAME>
+
+custom:
+  # benchmark 特有的参数
+  dataset_path: data/datasets/aime2025
+  max_tokens: 16000
+  temperature: 0.0
+  max_workers: 10
+  timeout: 600

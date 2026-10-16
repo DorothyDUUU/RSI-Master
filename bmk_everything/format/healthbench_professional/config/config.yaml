@@ -1,0 +1,28 @@
+general:
+  anthropic_api_base: <ANTHROPIC_API_BASE>
+  anthropic_api_token: <ANTHROPIC_API_TOKEN>
+  openai_api_base: <OPENAI_API_BASE>
+  openai_api_token: <OPENAI_API_TOKEN>
+  model: <MODEL_NAME>
+  split: <SPLIT_NAME>
+  output_dir: data/output/<BENCHMARK_ID>/<TRIAL_NAME>
+custom:
+  dataset_path: data/datasets/healthbench_professional
+  dataset_revision: 349962fd46dd02343a0d8a606491baf59154ea1a
+  dataset_sha256: 97357c11c770002a9ca0c8f5e719feec9982ed776c8a8344ec1ce01d139f6ba0
+  dataset_seed: 42
+  candidate_max_tokens: 65536
+  candidate_timeout: 600
+  candidate_retries: 5
+  candidate_workers: 8
+  grader_model: deepseek-v4-flash
+  grader_api_base: https://your-judge.example.com/v1
+  grader_api_token_env: OPENAI_API_KEY
+  grader_max_tokens: 32768
+  grader_reasoning_max_tokens: 49152
+  grader_timeout: 300
+  grader_retries: 5
+  grader_max_workers: 16
+  example_workers: 2
+  criterion_workers: 8
+  grader_protocol: override

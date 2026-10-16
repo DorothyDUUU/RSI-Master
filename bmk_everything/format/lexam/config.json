@@ -1,0 +1,17 @@
+{
+  "benchmark-id": "lexam",
+  "benchmark-name": "LEXam",
+  "domain": "domain_knowledge",
+  "adapter": "hf_multiple_choice",
+  "eval-method": "multiple_choice",
+  "integration-status": "runnable",
+  "source": "https://huggingface.co/datasets/LEXam-Benchmark/LEXam",
+  "split": [
+    "default"
+  ],
+  "license": {
+    "evidence": "https://huggingface.co/api/datasets/LEXam-Benchmark/LEXam",
+    "spdx": "cc-by-4.0"
+  },
+  "resource-class": "light"
+}
