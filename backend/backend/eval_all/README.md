@@ -95,4 +95,4 @@ benchmark suite 对任何 incomplete 样本都会**退出非 0** 且把 `reward`
 
 ## Setup and portable paths
 
-See [BmkEverything setup](../../../bmk_everything/SETUP.md). The candidate release includes 24 selected paper benchmark definitions; datasets and external evaluator environments are prepared separately. Set `BENCHMARK_ROOT` to a complete tree on the execution host, or pass `--bmk-root`; keep ExpOS `eval_all.bmk_root` consistent. A healthy GPU backend does not verify benchmark assets.
+See [BmkEverything setup](../../../bmk_everything/SETUP.md). The project supports 24 benchmark integrations; datasets and external evaluator environments are prepared separately. Set `BENCHMARK_ROOT` to a complete tree on the execution host, or pass `--bmk-root`; keep ExpOS `eval_all.bmk_root` consistent. A healthy GPU backend does not verify benchmark assets.

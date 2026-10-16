@@ -96,7 +96,7 @@ def main() -> None:
     if not FORMAT_DIR.is_dir():
         raise SystemExit(
             f"error: benchmark definitions missing: {FORMAT_DIR}. "
-            "This release includes framework only; supply a complete benchmark tree "
+            "Use a checkout containing format/ or select a benchmark tree "
             "via BENCHMARK_ROOT. See bmk_everything/SETUP.md."
         )
     if args.list:

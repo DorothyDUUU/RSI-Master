@@ -2,7 +2,7 @@
 
 Official code for [RSI-Master: Structuring Experiments to Guide Autonomous Model Improvement](https://arxiv.org/abs/2609.35561).
 
-This release includes Experiment OS and the `cc_rollout` playground. Reviewer-Guided Research Orchestration is outside this release; the candidate paper benchmark package includes 24 selected definitions with separately prepared data.
+RSI-Master includes Experiment OS, the `cc_rollout` playground, and a unified evaluation framework with 24 benchmark integrations.
 
 An agent framework for self-evolving research workflows. A **playground** seeds a private
 workspace for an agent, launches it, and records what it did; the agent's job is to run a
@@ -22,7 +22,7 @@ roll out end to end without branching.
 | `playground/cc_rollout/` | The `cc_rollout` playground (seeding, runner, orchestrator, prompts) |
 | `configs/cc_rollout/` | Config templates (`config.yaml` = naive, `config_cc_with_expos.yaml`) |
 | `backend/` | GPU-side plumbing: `gpu_backend` HTTP client, `server`, `submit_pipeline`, eval wrappers |
-| `bmk_everything/` | The benchmark suite — `framework/` (unified eval entry point). 24 selected benchmark definitions; datasets are prepared separately |
+| `bmk_everything/` | The benchmark suite — `framework/` (unified eval entry point). 24 supported benchmark integrations; datasets are prepared separately |
 | `tools/ExpOS/` | `expos` — the experiment-state / submit-pipeline CLI used by `cc_with_expos` |
 | `tools/cc_rollout_expos/` | Thin wrapper that binds `expos` to the submit pipeline |
 | `tools/bash_security/`, `tools/bash_backend/` | Sandbox filtering + the bash execution backend |
@@ -66,22 +66,47 @@ tree — `backend/backend/llama_factory/` contains the vendored training framewo
 `backend/backend/vllm/` the serving docs. Training stages activate them by absolute path
 (`<repo>/public/.../bin/activate`), so build them in place rather than symlinking.
 
-### The paper benchmark suite (`bmk_everything/`)
+### Benchmark suite (`bmk_everything/`)
 
-The candidate release contains the **24 distinct benchmarks with presented results**
-in the paper. See [`paper_manifest.json`](bmk_everything/paper_manifest.json) for the
-selected IDs and [the setup guide](bmk_everything/SETUP.md) for paths, environments,
-data and judge services. Other private benchmarks are outside this release.
+BmkEverything provides a unified evaluation entrypoint for the benchmarks below.
+Install the framework, prepare the dataset and any external evaluator, then select
+an integration with its benchmark ID. See the [setup guide](bmk_everything/SETUP.md)
+for environment, path, endpoint and dataset configuration.
 
-Datasets and third-party evaluator environments are built separately.
-[`paper_downloads.json`](bmk_everything/paper_downloads.json) records data sources
-and available preparation commands; each `format/<id>/BENCHMARK.md` describes the
-integration. LegalBench, MedCaseReasoning and CKQA use the paper's pinned
-DataPrep-Bench protocol rather than a generic task with the same name.
+[`benchmarks.json`](bmk_everything/benchmarks.json) lists the supported IDs;
+[`datasets.json`](bmk_everything/datasets.json) records data sources, revisions and
+available preparation commands. Data, model weights and evaluator environments
+are prepared separately. Validation results are recorded in
+[the verification notes](docs/OPEN_SOURCE_VALIDATION.md).
 
-This is a candidate package: passing unit tests and dry runs does not establish
-full paper reproducibility. MedXpertQA uses the original MM-data text-only variant, documented explicitly;
-specialized judge/code-execution environments still require end-to-end verification.
+#### Supported benchmarks
+
+| Benchmark | ID | Domain | Evaluation | Additional setup |
+|---|---|---|---|---|
+| [AIME 2025](bmk_everything/format/aime2025/BENCHMARK.md) | `aime2025` | Mathematics | Numeric exact match | Local JSONL data |
+| [AIME 2026](bmk_everything/format/aime2026/BENCHMARK.md) | `aime2026` | Mathematics | Numeric exact match | Local JSONL data |
+| [Arena-Hard Writing](bmk_everything/format/arenahardwriting/BENCHMARK.md) | `arenahardwriting` | Writing | LLM-judged preference score | External evaluator and judge API |
+| [BFCL](bmk_everything/format/bfcl/BENCHMARK.md) | `bfcl` | Tool use | Function-calling evaluation | BFCL evaluator and datasets |
+| [CKQA](bmk_everything/format/ckqa/BENCHMARK.md) | `ckqa` | Finance | Multiple-choice accuracy | DataPrep dataset bootstrap |
+| [CMPhysBench](bmk_everything/format/cmphysbench/BENCHMARK.md) | `cmphysbench` | Physics | Official SEED score | External evaluator and scorer environment |
+| [CTI-MCQ](bmk_everything/format/cti-mcq/BENCHMARK.md) | `cti-mcq` | Cybersecurity | Multiple-choice accuracy | Local JSONL data |
+| [Earth Silver](bmk_everything/format/earthse-earth-silver/BENCHMARK.md) | `earthse-earth-silver` | Earth science | Multiple-choice accuracy | Local JSONL data |
+| [EconLogicQA](bmk_everything/format/econlogicqa/BENCHMARK.md) | `econlogicqa` | Economics | Event-order sequence exact match | Local JSONL data |
+| [GPQA](bmk_everything/format/gpqa/BENCHMARK.md) | `gpqa` | Science | Multiple-choice accuracy | Dataset access approval and local data |
+| [GSM8K](bmk_everything/format/gsm8k/BENCHMARK.md) | `gsm8k` | Mathematics | Numeric-answer accuracy | Local Hugging Face dataset |
+| [HealthBench Easy](bmk_everything/format/healthbench_easy/BENCHMARK.md) | `healthbench_easy` | Medicine | Rubric-based score | Prepared Easy subset and judge API |
+| [HealthBench Professional](bmk_everything/format/healthbench_professional/BENCHMARK.md) | `healthbench_professional` | Medicine | Rubric-based score | Dataset and judge API |
+| [HLE](bmk_everything/format/hle/BENCHMARK.md) | `hle` | General knowledge | Answer grading | Dataset and judge API |
+| [HorizonMath](bmk_everything/format/horizonmath/BENCHMARK.md) | `horizonmath` | Research mathematics | Official solution validation | External checkout and validation dependencies |
+| [HumanEval](bmk_everything/format/humaneval/BENCHMARK.md) | `humaneval` | Coding | Execution-based pass@1 | Dataset and isolated code-execution environment |
+| [LegalBench](bmk_everything/format/legalbench/BENCHMARK.md) | `legalbench` | Law | Weighted balanced accuracy across five tasks | DataPrep dataset bootstrap and judge API |
+| [LEXam](bmk_everything/format/lexam/BENCHMARK.md) | `lexam` | Law | 16-option multiple-choice accuracy | Local JSONL data |
+| [LiveCodeBench](bmk_everything/format/livecodebench/BENCHMARK.md) | `livecodebench` | Coding | Execution-based pass@1 | Code Generation Lite v6 and execution environment |
+| [MedCaseReasoning](bmk_everything/format/medcasereasoning/BENCHMARK.md) | `medcasereasoning` | Medicine | Diagnostic accuracy; reasoning recall | DataPrep dataset bootstrap and judge API |
+| [MedXpertQA](bmk_everything/format/medxpertqa/BENCHMARK.md) | `medxpertqa` | Medicine | Five-option accuracy; MM-data text-only variant | Local MM-config JSONL data; images are not sent |
+| [Pre-Flight](bmk_everything/format/pre-flight/BENCHMARK.md) | `pre-flight` | Aviation | Multiple-choice accuracy | Local JSONL data |
+| [SciCode-Verified](bmk_everything/format/scicode-verified/BENCHMARK.md) | `scicode-verified` | Scientific coding | Official execution-based scoring | External SciCode-Verified checkout and grading environments |
+| [WMDP-Bio](bmk_everything/format/wmdp-bio/BENCHMARK.md) | `wmdp-bio` | Biology | Multiple-choice accuracy | Local JSONL data |
 
 ### The slime training environment
 

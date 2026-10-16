@@ -119,7 +119,7 @@ class CoreTests(unittest.TestCase):
         self.assertTrue({"gsm8k", "gpqa", "aime2025"}.issubset(ids))
         # the catalogue grew beyond 200 (2026 domain-knowledge survey added 53);
         # assert consistency with the manifest rather than a hardcoded count
-        self.assertEqual(ids, set(json.loads((REPO_DIR / "paper_manifest.json").read_text())["benchmark_ids"]))
+        self.assertEqual(ids, set(json.loads((REPO_DIR / "benchmarks.json").read_text())["benchmark_ids"]))
         self.assertEqual(Counter(item["integration-status"] for item in manifests),
                          {"runnable": len(manifests)})
 

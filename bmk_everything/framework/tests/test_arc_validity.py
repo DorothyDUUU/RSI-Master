@@ -6,7 +6,7 @@ from pathlib import Path
 RUNNER = Path(__file__).parents[2] / "format/arc-agi-1/arc_runner.py"
 if not RUNNER.is_file():
     import pytest
-    pytest.skip("ARC-AGI is outside the paper release scope", allow_module_level=True)
+    pytest.skip("ARC-AGI is outside the supported benchmark catalogue", allow_module_level=True)
 sys.path.insert(0, str(RUNNER.parent))
 SPEC = importlib.util.spec_from_file_location("arc_agi_1_runner", RUNNER)
 MODULE = importlib.util.module_from_spec(SPEC)

@@ -29,9 +29,9 @@ from core.provider import ChatResult  # noqa: E402
 
 
 class DataPrepEvalTests(unittest.TestCase):
-    def test_paper_integrations_are_pinned_and_registered(self):
+    def test_supported_integrations_are_pinned_and_registered(self):
         expected = {"legalbench", "medcasereasoning", "ckqa"}
-        registry = set(json.loads((REPO_ROOT / "paper_manifest.json").read_text())["benchmark_ids"])
+        registry = set(json.loads((REPO_ROOT / "benchmarks.json").read_text())["benchmark_ids"])
         self.assertTrue(expected <= registry)
         for benchmark_id in expected:
             directory = FORMAT / benchmark_id

@@ -1,17 +1,16 @@
 # Candidate release validation — 2026-10-16
 
-This branch prepares the 24 distinct benchmarks with presented results in
-[RSI-Master](https://arxiv.org/html/2609.35561v2). See
-[`paper_manifest.json`](../bmk_everything/paper_manifest.json) for the selected IDs,
-[`paper_downloads.json`](../bmk_everything/paper_downloads.json) for sources, and
+The project integrates 24 benchmarks. See
+[`benchmarks.json`](../bmk_everything/benchmarks.json) for the IDs,
+[`datasets.json`](../bmk_everything/datasets.json) for data sources, and
 [setup instructions](../bmk_everything/SETUP.md).
 
 ## Completed checks
 
 - Selected framework suite: **88 passed, 1 skipped**, plus two passing subtests.
-  The skipped module requires ARC-AGI, which is outside this release scope.
+  The skipped module requires ARC-AGI, which is outside the supported catalogue.
 - Unified dry-run checks: **24/24 passed** using an existing data installation
-  and external checkouts, in an isolated copy of the candidate package.
+  and external checkouts, in an isolated checkout.
 - Full local row mapping invariants checked for LEXam, MedXpertQA, WMDP-Bio,
   EconLogicQA, Earth Silver, CTI-MCQ and Pre-Flight.
 - LegalBench uses the pinned DataPrep five-task, sample-weighted balanced accuracy
@@ -40,7 +39,7 @@ fields and did not shift after trailing blank-option filtering.
 
 ## Remaining verification
 
-These checks do **not** establish complete reproduction of the paper:
+The following end-to-end checks remain:
 
 - Not every dataset was downloaded into a fresh empty installation.
 - The vLLM installation commands have not been verified in a new GPU environment.
@@ -48,9 +47,9 @@ These checks do **not** establish complete reproduction of the paper:
   rerun on the target GPU topology.
 - Real candidate-model generation, judge calls and code-execution scoring have
   not been run for all 24 benchmarks.
-- Pin the final experiment's judge models and evaluator parameters; changing
+- Pin judge models and evaluator parameters for comparable runs; changing
   graders changes the evaluation protocol.
 
 Datasets, model weights, local environments and private experiment logs are not
-included in this branch. It remains a candidate for review rather than a claim
-that every integration works from a clean checkout.
+included in the repository. Install each integration's required assets and services
+before running an evaluation.
